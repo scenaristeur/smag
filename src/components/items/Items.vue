@@ -62,7 +62,7 @@ export default {
     },
     editItem(item) {
       console.log('edit', item.id);
-      // this.$store.commit('nodes/setCurrentNode', node)
+      this.$store.commit('app/setCurrentItem', item)
       // this.$router.push({ name: 'edit'});
     },
     byKey(key) {

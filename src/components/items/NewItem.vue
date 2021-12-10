@@ -6,8 +6,6 @@
       <b-icon stacked icon="circle" variant="info"></b-icon>
     </b-iconstack>
 
-    <b-button v-b-modal.newItemModal>Launch demo modal</b-button>
-
     <b-modal
     id="newItemModal"
     size="lg"
@@ -15,11 +13,12 @@
 
     @ok="save"
     >
+
+    {{ currentItem}}
     <!--    @show="popModal"
     @hidden="resetModal"
   -->
   <p class="my-4">
-    Name / Age / Tags<br>
     <b-row>
       <b-col sm="3">
         <label for="name">Name:</label>
@@ -155,13 +154,13 @@ import * as Tension from '@/agents/tension'
 export default {
   name: "NewItem",
   components: {
-  // 'NodeSelector': () => import('@/components/items/NodeSelector'),
-  // 'NodeLite': () => import('@/components/NodeLite'),
-  'Values': () => import('@/components/items/Values'),
-  // 'Quasar': () => import('@/views/Quasar'),
+    // 'NodeSelector': () => import('@/components/items/NodeSelector'),
+    // 'NodeLite': () => import('@/components/NodeLite'),
+    'Values': () => import('@/components/items/Values'),
+    // 'Quasar': () => import('@/views/Quasar'),
     // 'CKWysiwyg': () => import('@/views/CKWysiwyg'),
-  // 'editor': Editor
-},
+    // 'editor': Editor
+  },
   data(){
     return{
       item : {},
@@ -180,14 +179,19 @@ export default {
     //   console.log(this.item)
     // },
     newItem(){
-      let tension1 = new Tension({name: "New Tension"})
-      console.log(tension1)
-      this.item = tension1.data
+      this.tension = new Tension({name: "New Tension"})
+      console.log(this.tension)
+      this.item = this.tension.data
       this.$bvModal.show("newItemModal")
     },
     // OLD from node verse
     async save() {
-            console.log("save", this.item)
+      console.log("save", this.item)
+      this.tension.data = this.item
+      this.tension.save()
+
+      // this.tension1.test_change = "BIP"
+
       // await this.$store.dispatch('nodes/saveNode', this.node);
       // this.$store.commit('nodes/setCurrentNode', null)
       // this.$router.push('/');
@@ -241,6 +245,23 @@ export default {
     //
     //   //  this.$router.push({ name: 'edit', params: {modele: this.modele} });
     // },
+  },
+  watch:{
+    currentItem(){
+      console.log(this.currentItem)
+      if (this.currentItem != null){
+        this.tension = new Tension({name: "New Tension"})
+        console.log(this.tension)
+        this.item = this.currentItem
+        this.$bvModal.show("newItemModal")
+      }
+    }
+  },
+  computed:{
+    currentItem() {
+      return this.$store.state.app.currentItem
+    },
+
   }
 }
 </script>

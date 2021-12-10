@@ -12,11 +12,12 @@ let schema = {
     "@type": "type"
   },
   "ve:name":'',
-  "ve:tags": '',
+  "type": "agent",
   "ve:age": -1 ,
+  "ve:properties": [],
+  "ve:tags": ''
   //  "ve:privacy": 'private',
-  "ve:type": {"@id": "ve:agent"},
-  "ve:properties": []
+
 }
 
 
@@ -39,6 +40,11 @@ class Agent{
     }
 
   }
+  save(){
+    console.log("saving", this)
+    window.env.save(this.data)
+  }
+
   send(to, message){
     let from = {id: this.id, name: this.name}
     console.log("SEND","from",from, "to",to, message)

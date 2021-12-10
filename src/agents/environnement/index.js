@@ -37,6 +37,13 @@ class Environnement extends Agent {
   getAgents(){
     return agents
   }
+  async save(item){
+    console.log("must save item", item)
+    if(this.options.type.toLowerCase() == "vue2"){
+      await this.options.store.dispatch('local/saveItem', item)
+      await this.options.store.dispatch('local/getItems', item)
+    }
+  }
 
   updateEnv(){
     if(this.options.type.toLowerCase() == "vue2"){

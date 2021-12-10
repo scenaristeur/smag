@@ -13,10 +13,16 @@
 <script>
 import * as Environnement from '@/agents/environnement'
 import * as Acteur from '@/agents/acteur'
-
+// import { Observable } from 'object-observer/dist/object-observer.min.js';
 
 export default {
   name: "Sma",
+  data(){
+    return{
+      observables: []
+    }
+
+  },
   created(){
     let env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
     console.log(env)
@@ -28,6 +34,21 @@ export default {
     console.log("fictif 1", fictif)
     let agents = window.env.getAgents()
     console.log(agents)
+  },
+  watch:{
+//     agents(){
+//       this.observables = []
+//       this.agents.forEach(agent => {
+//         let observableAgent = Observable.from(agent);
+//         this.observables.push(observableAgent)
+//         observableAgent.observe(changes => {
+//           changes.forEach(change => {
+//             console.log("CHANGE", change);
+//           });
+//         });
+//       });
+// console.log(this.observables)
+//     }
   },
   computed:{
     agents(){
