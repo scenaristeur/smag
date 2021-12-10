@@ -40,9 +40,9 @@ class Agent{
     }
 
   }
-  save(){
-    console.log("saving", this)
-    window.env.save(this.data)
+  save(data){
+    console.log("saving", data)
+    window.env.save(data)
   }
 
   send(to, message){

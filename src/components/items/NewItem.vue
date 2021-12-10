@@ -11,10 +11,12 @@
     size="lg"
     :title="item.name"
 
-    @ok="save"
+    @ok="handleOk"
     >
 
-    {{ currentItem}}
+    current {{ currentItem}}
+    <hr>
+    effective {{item}}
     <!--    @show="popModal"
     @hidden="resetModal"
   -->
@@ -105,8 +107,7 @@
       ></b-form-textarea>
     </b-tab>
     <b-tab title="item" @click="fieldType = 'item'">
-      [[item selector]]
-      <!-- <ItemSelector :currentProp.sync="currentProp"/> -->
+      <ItemSelector :currentProp.sync="currentProp"/>
     </b-tab>
     <b-tab title="link" @click="fieldType = 'link'">
       <b-form-input
@@ -154,7 +155,7 @@ import * as Tension from '@/agents/tension'
 export default {
   name: "NewItem",
   components: {
-    // 'NodeSelector': () => import('@/components/items/NodeSelector'),
+    'ItemSelector': () => import('@/components/items/ItemSelector'),
     // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/items/Values'),
     // 'Quasar': () => import('@/views/Quasar'),
@@ -175,10 +176,13 @@ export default {
     }
   },
   methods:{
-    // handleOk(){
-    //   console.log(this.item)
-    // },
+    async handleOk(){
+      await this.save()
+      this.item = {}
+    },
     newItem(){
+      this.$store.commit('app/setCurrentItem', null)
+      this.item = {}
       this.tension = new Tension({name: "New Tension"})
       console.log(this.tension)
       this.item = this.tension.data
@@ -187,9 +191,11 @@ export default {
     // OLD from node verse
     async save() {
       console.log("save", this.item)
-      this.tension.data = this.item
-      this.tension.save()
-
+      this.tension.save(this.item)
+      this.$store.commit('app/setCurrentItem', null)
+    //  this.tension = null
+      //this.tension = null
+      //this.item = {}
       // this.tension1.test_change = "BIP"
 
       // await this.$store.dispatch('nodes/saveNode', this.node);
@@ -254,6 +260,8 @@ export default {
         console.log(this.tension)
         this.item = this.currentItem
         this.$bvModal.show("newItemModal")
+      }else{
+        this.item == {}
       }
     }
   },

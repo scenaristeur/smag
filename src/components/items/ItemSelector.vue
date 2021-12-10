@@ -55,7 +55,7 @@
 
 <script>
   export default {
-    name: "NodeSelector",
+    name: "ItemSelector",
     props: ['currentProp'],
     data() {
       return {
@@ -72,7 +72,7 @@
       availableOptions() {
         const criteria = this.criteria
         // Filter out already selected options
-        const options = this.nodes.filter(opt => this.value.indexOf(opt['ve:name']) === -1)
+        const options = this.items.filter(opt => this.value.indexOf(opt['ve:name']) === -1)
 
       //  const options = this.options.filter(opt => this.value.indexOf(opt) === -1)
         if (criteria) {
@@ -84,12 +84,12 @@
       },
       searchDesc() {
         if (this.criteria && this.availableOptions.length === 0) {
-          return 'There are no nodes matching your search criteria'
+          return 'There are no items matching your search criteria'
         }
         return ''
       },
-      nodes() {
-        return this.$store.state.nodes.nodes;
+      items() {
+        return this.$store.state.local.items;
       }
     },
     methods: {
