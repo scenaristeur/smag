@@ -33,11 +33,7 @@
       </b-col>
 
     </b-row>
-    <b-iconstack font-scale="3"  @click="addNode" class="floating-action-button" type="button">
-      <b-icon stacked icon="circle-fill" variant="warning"></b-icon>
-      <b-icon stacked icon="pencil" scale="0.5" variant="primary"></b-icon>
-      <b-icon stacked icon="circle" variant="info"></b-icon>
-    </b-iconstack>
+
   </div>
 </template>
 
@@ -59,10 +55,6 @@ export default {
     this.$store.dispatch('local/getItems', {type: "tension"})
   },
   methods:{
-    addNode(){
-      console.log("ADDBUTTON")
-      //  this.$router.push({ name: 'edit', params: {modele: this.modele} });
-    },
     async deleteItem(item) {
       console.log('delete', item.id, item);
       await this.$store.dispatch('local/deleteItem', item);

@@ -9,7 +9,7 @@
         <li>Un titre</li>
         <li>Un description de ce qui est à l'heure actuelle.</li>
         <li>Une description de ce qui devrait être.</li>
-        <li>Un proposition pour passer de ce qui est à ce qui devrait être.</li>
+        <li>Une proposition pour passer de ce qui est à ce qui devrait être.</li>
       </ul>
     </p>
     <b-card>
@@ -67,35 +67,11 @@
       <b-button v-if="cardActive" size="sm" variant="light" @click="clean">Cancel</b-button>
       <b-button v-if="cardActive" variant="info" @click="add">Save</b-button>
 
-      <!-- <b-form-checkbox v-model="share" name="check-button" v-if="cardActive">
-      Partager sur
-      <a href=" https://scenaristeur.github.io/booklice?source=https://booklice.solidweb.org/public/bookmarks/"
-      target="_blank">Booklice Pod</a>
-    </b-form-checkbox> -->
 
   </b-card>
   {{ items.length}}
 
-  <!-- <b-row v-if="items.length > 0">
 
-  <b-col cols="12" md="4">
-
-  <b-input-group class="mb-3">
-
-  <b-form-input v-model="search" placeholder="search"></b-form-input>
-  <b-input-group-append>
-  <b-button variant="outline-secondary" @click="search=''">X</b-button>
-</b-input-group-append>
-</b-input-group>
-</b-col>
-<b-col cols="12" md="4">
-<b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
-
-</b-col>
-</b-row>
-<div v-else>
-Use the bottom right pen button to add a item.
-</div> -->
 <b-row>
 
   <Items :items="items" />
@@ -110,8 +86,6 @@ Use the bottom right pen button to add a item.
 <script>
 import _ from 'underscore'
 const API_URL = 'https://www.wikidata.org/w/api.php?action=wbsearchentities&origin=*&format=json'
-
-
 
 export default {
   name: "Tension",
@@ -134,10 +108,11 @@ export default {
 
     }
   },
-  created() {
+  async created() {
     this.init()
     this.language = navigator.language.split("-")[0] || 'en'
     this.initForm(this.$route.query)
+
 
   },
   methods:{
@@ -285,24 +260,3 @@ computed:{
 }
 }
 </script>
-
-<style>
-.floating-action-button {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index:3;
-}
-.add-item input {
-  outline: none;
-  border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  width: 100%;
-  transition: all 0.25s;
-  background: inherit;
-  color: white;
-}
-.add-item input:focus {
-  border-bottom-color: rgba(255, 255, 255, 1);
-}
-</style>

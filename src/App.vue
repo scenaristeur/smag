@@ -9,6 +9,7 @@
     <hr>
     <Login />
     <NewNote />
+    <NewItem />
     {{session}}
   </div>
 </template>
@@ -20,6 +21,7 @@ export default {
     'Navbar': () => import('@/components/layout/Navbar'),
     'Login': () => import('@/components/solid/Login'),
     'NewNote': () => import('@/views/sharing/NewNote'),
+    'NewItem': () => import('@/components/items/NewItem'),
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
