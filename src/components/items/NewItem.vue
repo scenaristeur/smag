@@ -12,17 +12,22 @@
 import * as Tension from '@/agents/tension'
 
 export default {
-name: "NewItem",
-methods:{
-  newItem(){
-    console.log("ADDBUTTON")
-    let tension1 = new Tension({name: "Tension 1"})
-    tension1.print()
-    tension1.log("yohoho, hello!")
-    tension1.alert()
-    //  this.$router.push({ name: 'edit', params: {modele: this.modele} });
-  },
-}
+  name: "NewItem",
+  methods:{
+    newItem(){
+      console.log("ADDBUTTON")
+      let tension1 = new Tension({name: "Tension 1"})
+      tension1.print()
+      tension1.log("yohoho, hello!")
+
+      tension1.alert()
+      tension1.send('theUser', {action: "name"})
+      window.env.removeAgentByName('fictif 1')
+      let agents = window.env.getAgents()
+      console.log(agents)
+      //  this.$router.push({ name: 'edit', params: {modele: this.modele} });
+    },
+  }
 }
 </script>
 

@@ -1,6 +1,7 @@
 var Agent = require('../agent');
 
 let schema = {
+  "ve:type": {"@id": "ve:tension"},
   "ve:wi" : 'what is ?',
   "ve:wsb": 'test in root and in properties',
   "ve:proposition": '',
