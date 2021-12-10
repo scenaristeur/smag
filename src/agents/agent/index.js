@@ -1,4 +1,6 @@
 // this.options = agent properties
+// vue lifecycle https://v3.vuejs.org/api/options-lifecycle-hooks.html#beforecreate
+// js object lifecycle https://www.coursera.org/lecture/javascript-jquery-json/javascript-object-life-cycle-4pedI
 const { v4: uuidv4 } = require('uuid');
 
 let schema = {
