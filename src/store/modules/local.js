@@ -37,7 +37,7 @@ const actions = {
       // }
       // if (exclude != "local"){
         console.log('store is being asked to delete '+item.id, item['ve:name']);
-        await idb.delete(item);
+        await idb.deleteItem(item);
       // }
     }
   },

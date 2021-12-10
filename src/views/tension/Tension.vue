@@ -15,13 +15,13 @@
     <b-card>
       <b-form-input
       v-if="cardActive"
-      v-model="tension.title"
-      placeholder="Title"
+      v-model="item['ve:name']"
+      placeholder="Name"
       ></b-form-input>
 
       <b-form-input
-      ref="text"
-      v-model="tension.wi"
+      ref="title"
+      v-model="item['ve:wi']"
       :placeholder="text_placeholder"
       @click="inputFocus=true"
       @blur="inputFocus=false"
@@ -29,14 +29,14 @@
 
       <b-form-input
       v-if="cardActive"
-      v-model="tension.wsb"
+      v-model="item['ve:wsb']"
       placeholder="What should be ?"
       ></b-form-input>
 
       <b-form-textarea
       id="textarea"
       v-if="cardActive"
-      v-model="tension.proposition"
+      v-model="item['ve:proposition']"
       placeholder="Your proposition..."
       rows="3"
       max-rows="6"
@@ -50,6 +50,13 @@
       @tags-changed="update"
       />
 
+      <div v-if="cardActive">
+        Priority / Age / Status
+        <b-form-input
+        v-model="item['ve:age']"
+        type="number"
+        ></b-form-input>
+      </div>
 
       <!-- <b-form-input
       v-if="cardActive"
@@ -61,25 +68,56 @@
       <b-button v-if="cardActive" variant="info" @click="add">Save</b-button>
 
       <!-- <b-form-checkbox v-model="share" name="check-button" v-if="cardActive">
-        Partager sur
-        <a href=" https://scenaristeur.github.io/booklice?source=https://booklice.solidweb.org/public/bookmarks/"
-        target="_blank">Booklice Pod</a>
-      </b-form-checkbox> -->
+      Partager sur
+      <a href=" https://scenaristeur.github.io/booklice?source=https://booklice.solidweb.org/public/bookmarks/"
+      target="_blank">Booklice Pod</a>
+    </b-form-checkbox> -->
 
-    </b-card>
-    {{ items.length}}
-    {{ items}}
-  </div>
+  </b-card>
+  {{ items.length}}
+
+  <!-- <b-row v-if="items.length > 0">
+
+  <b-col cols="12" md="4">
+
+  <b-input-group class="mb-3">
+
+  <b-form-input v-model="search" placeholder="search"></b-form-input>
+  <b-input-group-append>
+  <b-button variant="outline-secondary" @click="search=''">X</b-button>
+</b-input-group-append>
+</b-input-group>
+</b-col>
+<b-col cols="12" md="4">
+<b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
+
+</b-col>
+</b-row>
+<div v-else>
+Use the bottom right pen button to add a item.
+</div> -->
+<b-row>
+
+  <Items :items="items" />
+
+</b-row>
+{{ items}}
+
+
+</div>
 </template>
 
 <script>
 import _ from 'underscore'
 const API_URL = 'https://www.wikidata.org/w/api.php?action=wbsearchentities&origin=*&format=json'
 
+
+
 export default {
   name: "Tension",
   components: {
     'VueTagsInput': () => import('@johmun/vue-tags-input'),
+    'Items': () => import('@/components/items/Items'),
   },
   data(){
     return{
@@ -87,27 +125,47 @@ export default {
       tags: [],
       autocompleteTagsItems: [],
       debounce: null,
-      tension: {title: "", wi: "", wsb: "", proposition: "", tags: ""},
+      item: null,
       inputFocus: false,
       cardActive: false,
       text_placeholder: "What should be different ?",
       share: true,
       checked1: true,
+
     }
   },
   created() {
+    this.init()
     this.language = navigator.language.split("-")[0] || 'en'
     this.initForm(this.$route.query)
-    this.$store.dispatch('local/getItems', {type: "tension"})
+
   },
   methods:{
-
+    init(){
+      this.item = this.$store.state.local.currentItem ||
+      {  "@context": {
+        "@vocab": "https://www.w3.org/ns/activitystreams",
+        "ve": "https://scenaristeur.github.io/verse/",
+        "@id": "id",
+        "@type": "type"
+      },
+      "ve:name":'',
+      "ve:wi" : '',
+      "ve:wsb": '',
+      "ve:proposition": '',
+      "ve:tags": '',
+      "ve:age": 0 ,
+      "ve:privacy": 'private',
+      "ve:type": "item",
+      "ve:properties": [],
+      test: "test vocab"}
+    },
     add(){
       //  if (this.pod != undefined && this.pod.webId != null){
-      let t = this.tension
-      t.share = this.share
-      t.type = "tension"
-      this.$store.dispatch('local/saveItem', t)
+      let i = this.item
+      i.share = this.share
+      i.type = "tension"
+      this.$store.dispatch('local/saveItem', i)
       this.clean()
       this.$store.dispatch('local/getItems', {type: "tension"})
       // }else{
@@ -117,19 +175,21 @@ export default {
       // }
     },
     clean(){
-      this.tension = {title: "", wi: "", wsb: "", proposition: "", tags: ""}
-      this.currentNote = {title: "", wi: "", wsb: "", proposition: "", tags: ""}
+      this.init()//this.tension = {title: "", wi: "", wsb: "", proposition: "", tags: "", age: 0}
+      //this.currentNote = {title: "", wi: "", wsb: "", proposition: "", tags: "", age: 0}
       this.cardActive = false
       this.text_placeholder= "Signal a tension"
       this.tags = []
     },
+
     initForm(q){
       console.log("init",q)
       if (q.title != undefined || q.wi != undefined || q.wsb != undefined || q.proposition != undefined){
-        let t = {title: q.title || "",
-        wi: q.wi || "",
-        wsb: q.wsb || "",
-        proposition: q.proposition || "",
+        let i = {'ve:name': q.title || "",
+        've:wi': q.wi || "",
+        've:wsb': q.wsb || "",
+        've:proposition': q.proposition || "",
+        've:age': q.age || "",
       }
       this.tags = q.tags != undefined ? JSON.parse(q.tags) : ""
       this.cardActive = true
@@ -138,8 +198,8 @@ export default {
       //   n.text = ""
       //   this.text_placeholder = "Ajoutez une description"
       // }
-      this.tension = t
-      console.log("note init",this.tension)
+      this.item = i
+      console.log("item init",this.item)
       this.topic == undefined ? this.topic = "default" : ""
     }
   },
@@ -182,12 +242,13 @@ export default {
       this.loading = false
     }
   },
+
 },
 watch:{
   'tag': _.debounce(function(t) { this.getTags(t) }, 500),
   tags(){
     console.log(this.tags)
-    this.tension.tags = this.tags//.map(t => t.text.trim())
+    this.item['ve:tags'] = this.tags//.map(t => t.text.trim())
   },
   '$route' (to) {
     //  console.log("New Note, to",to)
@@ -197,7 +258,7 @@ watch:{
     if (this.inputFocus == true){
       this.cardActive = true
       this.text_placeholder = "What is ?"
-      this.$refs.text.focus()
+      this.$refs.title.focus()
     }
   },
   currentNote(){
@@ -205,7 +266,7 @@ watch:{
     this.tension = this.currentTension
     this.tags = this.currentTension.tags//.map(t => {return {text:t}})
     this.cardActive = true
-    this.$refs.text.focus()
+    this.$refs.title.focus()
     //  console.log(this.$refs.text)
   }
 },
@@ -226,5 +287,22 @@ computed:{
 </script>
 
 <style>
-
+.floating-action-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index:3;
+}
+.add-item input {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
+  transition: all 0.25s;
+  background: inherit;
+  color: white;
+}
+.add-item input:focus {
+  border-bottom-color: rgba(255, 255, 255, 1);
+}
 </style>
