@@ -77,7 +77,7 @@
   <Items :items="items" />
 
 </b-row>
-{{ items}}
+<!-- {{ items}} -->
 
 
 </div>

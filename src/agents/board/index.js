@@ -7,20 +7,20 @@ var Agent = require('../agent');
 //   "ve:proposition": '',
 // }
 
-// let props = [
-//   {"name": 've:pod', "value": null},
-//   // {"name": 've:wsb', "value": "What should be in prop ?"},
-//   // {"name": 've:proposition', "value": "What is in prop ?"},
-// ]
+let props = [
+  {"name": 've:pod', "value": null},
+  // {"name": 've:wsb', "value": "What should be in prop ?"},
+  // {"name": 've:proposition', "value": "What is in prop ?"},
+]
 
-class Board extends Agent {
+class Acteur extends Agent {
 
   constructor(options){
     super(options); // this is required
     // this.data = Object.assign(this.data, schema);
-    //this.data['ve:properties'] = Object.assign(this.data['ve:properties'], props);
+    this.data['ve:properties'] = Object.assign(this.data['ve:properties'], props);
     console.log(this.data);
   }
 
 }
-module.exports = Board;
+module.exports = Acteur;

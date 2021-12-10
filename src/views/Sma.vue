@@ -1,6 +1,7 @@
 <template>
   <div>
     sma<br>
+    <b-button @click="boardTest">boardTest</b-button>
     Agents :
     <ul>
       <li v-for="a in agents" :key="a.id">
@@ -13,6 +14,10 @@
 <script>
 import * as Environnement from '@/agents/environnement'
 import * as Acteur from '@/agents/acteur'
+import * as Board from '@/agents/acteur'
+import  'evejs/dist/eve.custom.js';
+
+import { HelloAgent } from '@/agents/HelloAgent.js';
 // import { Observable } from 'object-observer/dist/object-observer.min.js';
 
 export default {
@@ -24,31 +29,48 @@ export default {
 
   },
   created(){
-    let env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
-    console.log(env)
-    let acteur = new Acteur({name: "user"})
+    // create two agents
+this.agent1 = new HelloAgent('agent1');
+this.agent2 = new HelloAgent('agent2');
 
-    acteur.print()
-    acteur.log("yohoho, hello i'm the principal actor!")
+console.log(this.agent1)
+
+  // send a message to agent1
+  this.agent2.send('agent1', 'Hello agent1!');
+
+    this.env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
+    console.log(this.env)
+    this.board = new Board({name: "board"})
+    this.board.print()
+    this.acteur = new Acteur({name: "user"})
+
+    this.acteur.print()
+    this.acteur.log("yohoho, hello i'm the principal actor!")
     let fictif = new Acteur({name: "fictif 1"})
     console.log("fictif 1", fictif)
     let agents = window.env.getAgents()
     console.log(agents)
   },
+  methods:{
+    boardTest(){
+      this.acteur.send("board", {action: "put", content: {text: "hello", world: "world"}})
+      this.acteur.send("board", {action: "read"})
+    }
+  },
   watch:{
-//     agents(){
-//       this.observables = []
-//       this.agents.forEach(agent => {
-//         let observableAgent = Observable.from(agent);
-//         this.observables.push(observableAgent)
-//         observableAgent.observe(changes => {
-//           changes.forEach(change => {
-//             console.log("CHANGE", change);
-//           });
-//         });
-//       });
-// console.log(this.observables)
-//     }
+    //     agents(){
+    //       this.observables = []
+    //       this.agents.forEach(agent => {
+    //         let observableAgent = Observable.from(agent);
+    //         this.observables.push(observableAgent)
+    //         observableAgent.observe(changes => {
+    //           changes.forEach(change => {
+    //             console.log("CHANGE", change);
+    //           });
+    //         });
+    //       });
+    // console.log(this.observables)
+    //     }
   },
   computed:{
     agents(){

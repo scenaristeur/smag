@@ -14,9 +14,9 @@
     @ok="handleOk"
     >
 
-    current {{ currentItem}}
+    <!-- current {{ currentItem}}
     <hr>
-    effective {{item}}
+    effective {{item}} -->
     <!--    @show="popModal"
     @hidden="resetModal"
   -->

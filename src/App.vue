@@ -25,7 +25,6 @@ export default {
     'NewNote': () => import('@/views/sharing/NewNote'),
     'NewItem': () => import('@/components/items/NewItem'),
     'Sma': () => import('@/views/Sma'),
-
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
