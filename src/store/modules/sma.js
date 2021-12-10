@@ -5,18 +5,18 @@ const state = () => ({
 })
 
 const actions = {
-  async setAgents(context, a) {
-    context.state.agents = a
-    // context.state.pod.workspaces.push(w)
-    //Vue.prototype.$addWorkspaceToPod(w)
-  },
+  // async setAgents(context, a) {
+  //
+  //   context.state.agents = a
+  //   // context.state.pod.workspaces.push(w)
+  //   //Vue.prototype.$addWorkspaceToPod(w)
+  // },
 }
 
 const mutations = {
-  //
-  // addFile(state,f){
-  //   state.files.push(f)
-  // },
+  setAgents(state,a){
+    state.agents = a
+  },
   // addFolder(state,f){
   //   state.folders.push(f)
   // },

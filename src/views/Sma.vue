@@ -1,6 +1,12 @@
 <template>
   <div>
-    sma
+    sma<br>
+    Agents :
+    <ul>
+      <li v-for="a in agents" :key="a.id">
+        {{JSON.stringify(a, null, 2)}}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -22,6 +28,11 @@ export default {
     console.log("fictif 1", fictif)
     let agents = window.env.getAgents()
     console.log(agents)
+  },
+  computed:{
+    agents(){
+      return this.$store.state.sma.agents
+    },
   }
 }
 </script>

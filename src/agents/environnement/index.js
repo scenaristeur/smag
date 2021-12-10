@@ -39,8 +39,8 @@ class Environnement extends Agent {
   }
 
   updateEnv(){
-    if(this.options.type == "vue2"){
-      this.options.store.dispatch('sma/setAgents', agents)
+    if(this.options.type.toLowerCase() == "vue2"){
+      this.options.store.commit('sma/setAgents', agents)
     }
   }
 
