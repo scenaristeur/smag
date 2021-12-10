@@ -46,7 +46,7 @@
       v-if="cardActive"
       v-model="tag"
       :tags="tags"
-      :autocomplete-items="autocompleteItems"
+      :autocomplete-items="autocompleteTagsItems"
       @tags-changed="update"
       />
 
@@ -58,17 +58,17 @@
       ></b-form-input> -->
 
       <b-button v-if="cardActive" size="sm" variant="light" @click="clean">Cancel</b-button>
-      <b-button v-if="cardActive" size="sm" variant="info" @click="add">Save</b-button>
+      <b-button v-if="cardActive" variant="info" @click="add">Save</b-button>
 
-      <b-form-checkbox v-model="share" name="check-button" v-if="cardActive">
+      <!-- <b-form-checkbox v-model="share" name="check-button" v-if="cardActive">
         Partager sur
         <a href=" https://scenaristeur.github.io/booklice?source=https://booklice.solidweb.org/public/bookmarks/"
         target="_blank">Booklice Pod</a>
-      </b-form-checkbox>
+      </b-form-checkbox> -->
 
     </b-card>
-
-    {{ tensions}}
+    {{ items.length}}
+    {{ items}}
   </div>
 </template>
 
@@ -85,7 +85,7 @@ export default {
     return{
       tag: '',
       tags: [],
-      autocompleteItems: [],
+      autocompleteTagsItems: [],
       debounce: null,
       tension: {title: "", wi: "", wsb: "", proposition: "", tags: ""},
       inputFocus: false,
@@ -98,19 +98,23 @@ export default {
   created() {
     this.language = navigator.language.split("-")[0] || 'en'
     this.initForm(this.$route.query)
+    this.$store.dispatch('local/getItems', {type: "tension"})
   },
   methods:{
+
     add(){
-      if (this.pod != undefined && this.pod.webId != null){
-        let t = this.tension
-        t.share = this.share
-        this.$store.dispatch('app/addTension', t)
-        this.clean()
-      }else{
-        alert("Tu devrais te connecter en selectionnant un fournisseur de PODs, pour enregistrer un Booklice sur ton Pod")
-        let path = "/?title="+this.tension.title+"&wi="+this.tension.wi+"&wsb="+this.tension.wsb+"&proposition="+this.tension.proposition+"&tags="+JSON.stringify(this.note.tags)
-        this.$router.push({path: path})
-      }
+      //  if (this.pod != undefined && this.pod.webId != null){
+      let t = this.tension
+      t.share = this.share
+      t.type = "tension"
+      this.$store.dispatch('local/saveItem', t)
+      this.clean()
+      this.$store.dispatch('local/getItems', {type: "tension"})
+      // }else{
+      //   alert("Tu devrais te connecter en selectionnant un fournisseur de PODs, pour enregistrer un Booklice sur ton Pod")
+      //   let path = "/?title="+this.tension.title+"&wi="+this.tension.wi+"&wsb="+this.tension.wsb+"&proposition="+this.tension.proposition+"&tags="+JSON.stringify(this.tension.tags)
+      //   this.$router.push({path: path})
+      // }
     },
     clean(){
       this.tension = {title: "", wi: "", wsb: "", proposition: "", tags: ""}
@@ -140,7 +144,7 @@ export default {
     }
   },
   update(newTags) {
-    this.autocompleteItems = [];
+    this.autocompleteTagsItems = [];
     this.tags = newTags;
   },
   // initItems() {
@@ -157,7 +161,7 @@ export default {
   //     }).catch(() => console.warn('Oh. Something went wrong'));
   //   }, 600);
   // },
-  async getItems(query) {
+  async getTags(query) {
     //  this.conceptUri = ""
     if(query.length>0){
       this.loading = true
@@ -167,9 +171,9 @@ export default {
         const res = await fetch(search_url)
         const suggestions = await res.json()
         console.log(suggestions)
-        this.items = suggestions.search
-        console.log(this.items)
-        this.autocompleteItems = suggestions.search.map(a => {
+        this.tags_items = suggestions.search
+        console.log(this.tags_items)
+        this.autocompleteTagsItems = suggestions.search.map(a => {
           return { text: a.match.text+" ("+a.description+")", url: a.concepturi };
         });
       }catch(e){
@@ -180,7 +184,7 @@ export default {
   },
 },
 watch:{
-  'tag': _.debounce(function(item) { this.getItems(item) }, 500),
+  'tag': _.debounce(function(t) { this.getTags(t) }, 500),
   tags(){
     console.log(this.tags)
     this.tension.tags = this.tags//.map(t => t.text.trim())
@@ -209,12 +213,12 @@ computed:{
   pod(){
     return this.$store.state.solid.pod
   },
-  currentNote:{
-    get() { return this.$store.state.app.currentTension},
-    set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
-  },
-  tensions:{
-    get() { return this.$store.state.app.tensions},
+  // currentTension:{
+  //   get() { return this.$store.state.app.currentTension},
+  //   set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+  // },
+  items:{
+    get() { return this.$store.state.local.items},
     set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
   },
 }

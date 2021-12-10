@@ -3,7 +3,7 @@ const state = () => ({
   files: [],
   folders: [],
   mustExplore: null,
-  tensions: []
+  //tensions: []
   // bureau: null,
   // resource: null,
   // content: null
@@ -11,11 +11,11 @@ const state = () => ({
 })
 
 const actions = {
-  async addTension(context, t) {
-    context.state.tensions.push(t)
-    // context.state.pod.workspaces.push(w)
-    //Vue.prototype.$addWorkspaceToPod(w)
-  },
+  // async addTension(context, t) {
+  //   context.state.tensions.push(t)
+  //   // context.state.pod.workspaces.push(w)
+  //   //Vue.prototype.$addWorkspaceToPod(w)
+  // },
 }
 
 const mutations = {
