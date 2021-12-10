@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "eb33b2e9c5bbe9760a1c",
+    "revision": "1c9c604c7e0df9ffe881",
     "url": "/smag/css/app.1a2aa46a.css"
   },
   {
-    "revision": "da6ec4ff687bc6b0a2b8",
+    "revision": "912bd21eb2e89e4a8b91",
     "url": "/smag/css/chunk-27f79f6c.5dc319d7.css"
   },
   {
@@ -12,11 +12,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/css/chunk-625caf84.05d97788.css"
   },
   {
-    "revision": "c1863a2c373f193c133b",
+    "revision": "49b33f2f9e2f36ef4294",
     "url": "/smag/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "1391c1d706a7f675cef3b7e3cc7e4089",
+    "revision": "be7357190c5c5f0cfa268ac4b415450c",
     "url": "/smag/index.html"
   },
   {
@@ -24,16 +24,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/about.f94806eb.js"
   },
   {
-    "revision": "eb33b2e9c5bbe9760a1c",
-    "url": "/smag/js/app.27171062.js"
+    "revision": "1c9c604c7e0df9ffe881",
+    "url": "/smag/js/app.393674cf.js"
   },
   {
-    "revision": "7fd3abe87ffceffe40be",
-    "url": "/smag/js/chunk-24255f9f.786c37d2.js"
+    "revision": "a6aeb90ccad46dc74469",
+    "url": "/smag/js/chunk-24255f9f.271683d4.js"
   },
   {
-    "revision": "da6ec4ff687bc6b0a2b8",
-    "url": "/smag/js/chunk-27f79f6c.92667f15.js"
+    "revision": "912bd21eb2e89e4a8b91",
+    "url": "/smag/js/chunk-27f79f6c.be10f89c.js"
   },
   {
     "revision": "fa085b532d430b487a61",
@@ -60,6 +60,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/chunk-2d21e948.73258c82.js"
   },
   {
+    "revision": "54d75106af204faf58b5",
+    "url": "/smag/js/chunk-4100884c.85deaf19.js"
+  },
+  {
     "revision": "e613703d0760bcc5192a",
     "url": "/smag/js/chunk-53310e0c.b6b351b8.js"
   },
@@ -80,8 +84,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/chunk-f96af618.d8430dcd.js"
   },
   {
-    "revision": "c1863a2c373f193c133b",
-    "url": "/smag/js/chunk-vendors.d55e1383.js"
+    "revision": "49b33f2f9e2f36ef4294",
+    "url": "/smag/js/chunk-vendors.19f57cb1.js"
   },
   {
     "revision": "5d7ba7c6fa693f467ad3b993e7a1d4e4",
