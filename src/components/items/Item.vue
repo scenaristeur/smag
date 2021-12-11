@@ -69,7 +69,7 @@ export default {
         //this.agent4.send('agent3', 'Hello agent3!, a basic send')
         let message = {
           action: "create",
-          content : JSON.stringify(this.item),
+          content : JSON.stringify(this.item, null, 2),
           file: {type: 'application/ld+json'},
           url: 'https://agora.solidcommunity.net/public/blackboard/'+this.item.id
 
