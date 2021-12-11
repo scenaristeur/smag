@@ -53,7 +53,7 @@ const plugin = {
     console.log(store)
 
     Vue.prototype.$getResources = async function(path){
-      //  console.log("path", path)
+       console.log("path", path)
       let resources = []
       const dataset = await getSolidDataset( path, { fetch: sc.fetch });
       let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )

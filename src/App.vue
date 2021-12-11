@@ -12,7 +12,7 @@
     <NewItem />
     {{session}}
     <Sma />
-    <small><i>0.0.1-edit</i></small>
+    <small><i>0.0.1-sniffer</i></small>
   </div>
 </template>
 
