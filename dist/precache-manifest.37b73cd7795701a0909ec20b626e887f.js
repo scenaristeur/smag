@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "537654a51a5541745b14",
+    "revision": "f51e87d205a411081731",
     "url": "/smag/css/app.1a2aa46a.css"
   },
   {
-    "revision": "3f2c41f6179a0da54efb",
-    "url": "/smag/css/chunk-33bce466.5dc319d7.css"
+    "revision": "487a894f2871a5786728",
+    "url": "/smag/css/chunk-39865b7a.5dc319d7.css"
   },
   {
     "revision": "09cca26dc27978ec9eed",
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "19eba119d079d888c9cc0625ff45be53",
+    "revision": "39e6171b28b3ad17ff8e1372211604e8",
     "url": "/smag/index.html"
   },
   {
@@ -24,24 +24,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/about.b8c69c5a.js"
   },
   {
-    "revision": "537654a51a5541745b14",
-    "url": "/smag/js/app.219fe228.js"
+    "revision": "f51e87d205a411081731",
+    "url": "/smag/js/app.152912b5.js"
   },
   {
     "revision": "331a41aea7bae4536cab",
     "url": "/smag/js/chunk-1f9630aa.6307b574.js"
   },
   {
-    "revision": "0937739d5db5a83f691a",
-    "url": "/smag/js/chunk-24255f9f.1bb3c74c.js"
-  },
-  {
     "revision": "9b129b865ef825ea9926",
     "url": "/smag/js/chunk-2d0bd617.8eab1085.js"
   },
   {
-    "revision": "b47119d38490d3f5da16",
-    "url": "/smag/js/chunk-2d0c5abb.c8ee3f41.js"
+    "revision": "8241621b59ece2b940a9",
+    "url": "/smag/js/chunk-2d0c5abb.b87fef8a.js"
   },
   {
     "revision": "796862dc06ede93dbd7f",
@@ -56,8 +52,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/chunk-2d21e948.af72c8d5.js"
   },
   {
-    "revision": "3f2c41f6179a0da54efb",
-    "url": "/smag/js/chunk-33bce466.16f86045.js"
+    "revision": "487a894f2871a5786728",
+    "url": "/smag/js/chunk-39865b7a.1d6e3256.js"
   },
   {
     "revision": "7489eb00bc53480890c2",
@@ -82,6 +78,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "769c54100799c6d08f64",
     "url": "/smag/js/chunk-76800a3d.f11e0a56.js"
+  },
+  {
+    "revision": "e815f4e114275278cc69",
+    "url": "/smag/js/chunk-97f79104.35a50565.js"
+  },
+  {
+    "revision": "e8b4a6901ac3361f7026",
+    "url": "/smag/js/chunk-ccb0e492.b38bc3a4.js"
   },
   {
     "revision": "00736d6b8eb9a19d0e5a",

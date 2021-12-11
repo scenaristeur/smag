@@ -1,170 +1,140 @@
 <template>
   <div>
-    <b-iconstack font-scale="3"  @click="newItem" class="floating-action-button" type="button">
-      <b-icon stacked icon="circle-fill" variant="warning"></b-icon>
-      <b-icon stacked icon="pencil" scale="0.5" variant="primary"></b-icon>
-      <b-icon stacked icon="circle" variant="info"></b-icon>
-    </b-iconstack>
 
     <b-modal
     id="newItemModal"
     size="lg"
-    :title="item.name"
+    title="Item Edition"
 
     @ok="handleOk"
     >
+    <p class="my-4" v-if="item != null">
+      <b-row>
+        <b-col sm="3">
+          <label for="name">Name:</label>
+        </b-col>
+        <b-col sm="9">
+          <b-form-input id="name" v-model="item['ve:name']" autocomplete="off" autofocus />
+        </b-col>
+        <b-col sm="3">
+          <label for="age"><code>Age</code>:</label>
+        </b-col>
+        <b-col>
+          <b-form-input
+          id="age"
+          v-model="item['ve:age']"
+          required type="number"  />
+        </b-col>
+      </b-row>
 
-    <!-- current {{ currentItem}}
-    <hr>
-    effective {{item}} -->
-    <!--    @show="popModal"
-    @hidden="resetModal"
-  -->
-  <p class="my-4">
-    <b-row>
-      <b-col sm="3">
-        <label for="name">Name:</label>
-      </b-col>
-      <b-col sm="9">
-        <b-form-input id="name" v-model="item['ve:name']" autocomplete="off" autofocus />
-      </b-col>
-      <b-col sm="3">
-        <label for="age"><code>Age</code>:</label>
-      </b-col>
-      <b-col>
+      <b-row v-for="p in item['ve:properties']" :key="p.name">
+        <b-col sm="3">
+          <label for="name"><code>{{p.name}}</code>:</label>
+        </b-col>
+        <b-col sm="9">
+
+          <!-- <b-button-toolbar key-nav aria-label="Toolbar with button groups">
+          <b-dropdown size="sm" class="mx-1" right text="+" variant="outline-primary">
+          <b-dropdown-item @click="fieldType = 'text'">Text</b-dropdown-item>
+          <b-dropdown-item @click="fieldType = 'textarea'">Textarea</b-dropdown-item>
+          <b-dropdown-item @click="fieldType = 'node'">Node</b-dropdown-item>
+          <b-dropdown-item @click="fieldType = 'link'">Link</b-dropdown-item>
+        </b-dropdown>
+
+      </b-button-toolbar> -->
+      <b-button @click="showFieldModal(p)" variant="outline-primary">+</b-button>
+      <!-- {{ p.values}} -->
+
+      <Values :values="p.values" />
+
+      <!-- <b-form-input id="name" v-model="node.name" required /> -->
+    </b-col>
+  </b-row>
+
+  <b-row v-if="field != null" class="mt-3">
+    <b-col sm="3">
+      <b-form-input @change="fieldNameChanged" v-model="field.name" required placeholder="property name" />
+    </b-col>
+    <b-col sm="9">
+      <b-button variant="outline-secondary" size="sm" @click="clear_field">X</b-button>
+    </b-col>
+  </b-row>
+
+  <b-row v-else>
+    <b-col>
+    </b-col>
+    <b-col>
+      <b-btn variant="outline-primary" size="sm" @click="add">+ add a property or a link</b-btn>
+    </b-col>
+  </b-row>
+  <b-row>
+    <b-col>
+      <!-- <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
+      @click="node['ve:privacy'] = node['ve:privacy'] == undefined || node['ve:privacy'] == 'public' ? 'private' : 'public'">
+      {{node['ve:privacy']}}</b-button> -->
+      <!-- <b-btn variant="success" @click="save">Save Item</b-btn> -->
+    </b-col>
+  </b-row>
+
+  <b-modal id="fieldModal" size="xl" :title="item['ve:name']+' -> '+currentProp.name">
+    <!-- {{ currentProp}} -->
+    <b-tabs content-class="mt-3">
+      <b-tab title="text" active @click="fieldType = 'text'">
         <b-form-input
-        id="age"
-        v-model="item['ve:age']"
-        required type="number"  />
-      </b-col>
-    </b-row>
+        v-model="newvalue"
+        placeholder="new value"
+        @change="addNewValue"/>
+      </b-tab>
+      <b-tab title="textarea" @click="fieldType = 'textarea'">
+        <b-form-textarea
+        v-model="newvalue"
+        placeholder="Enter something..."
+        rows="3"
+        max-rows="6"
+        @change="addNewValue"
+        ></b-form-textarea>
+      </b-tab>
+      <b-tab title="item" @click="fieldType = 'item'">
+        <ItemSelector :currentProp.sync="currentProp"/>
+      </b-tab>
+      <b-tab title="link" @click="fieldType = 'link'">
+        <b-form-input
+        v-model="link.name"
+        placeholder="name"
+        />
+        <b-form-input
+        v-model="link.href"
+        placeholder="link"
+        @change="addNewLink"/>
+      </b-tab>
+    </b-tabs>
+  </b-modal>
 
-    <b-row v-for="p in item['ve:properties']" :key="p.name">
-      <b-col sm="3">
-        <label for="name"><code>{{p.name}}</code>:</label>
-      </b-col>
-      <b-col sm="9">
-
-        <!-- <b-button-toolbar key-nav aria-label="Toolbar with button groups">
-        <b-dropdown size="sm" class="mx-1" right text="+" variant="outline-primary">
-        <b-dropdown-item @click="fieldType = 'text'">Text</b-dropdown-item>
-        <b-dropdown-item @click="fieldType = 'textarea'">Textarea</b-dropdown-item>
-        <b-dropdown-item @click="fieldType = 'node'">Node</b-dropdown-item>
-        <b-dropdown-item @click="fieldType = 'link'">Link</b-dropdown-item>
-      </b-dropdown>
-
-    </b-button-toolbar> -->
-    <b-button @click="showFieldModal(p)" variant="outline-primary">+</b-button>
-    <!-- {{ p.values}} -->
-
-    <Values :values="p.values" />
-
-    <!-- <b-form-input id="name" v-model="node.name" required /> -->
-  </b-col>
-</b-row>
-
-<b-row v-if="field != null" class="mt-3">
-  <b-col sm="3">
-    <b-form-input @change="fieldNameChanged" v-model="field.name" required placeholder="property name" />
-  </b-col>
-  <b-col sm="9">
-    <b-button variant="outline-secondary" size="sm" @click="clear_field">X</b-button>
-  </b-col>
-</b-row>
-
-<b-row>
-  <b-col>
-  </b-col>
-  <b-col>
-    <b-btn variant="outline-primary" size="sm" @click="add">+ add a property or a link</b-btn>
-  </b-col>
-</b-row>
-<b-row>
-  <b-col>
-    <!-- <b-button  :variant="node['ve:privacy'] == 'public' ? 'warning' : 'outline-success'"
-    @click="node['ve:privacy'] = node['ve:privacy'] == undefined || node['ve:privacy'] == 'public' ? 'private' : 'public'">
-    {{node['ve:privacy']}}</b-button> -->
-    <b-btn variant="success" @click="save">Save Item</b-btn>
-  </b-col>
-</b-row>
-
-<b-modal id="fieldModal" size="xl" :title="item['ve:name']+' -> '+currentProp.name">
-  <!-- {{ currentProp}} -->
-  <b-tabs content-class="mt-3">
-    <b-tab title="text" active @click="fieldType = 'text'">
-      <b-form-input
-      v-model="newvalue"
-      placeholder="new value"
-      @change="addNewValue"/>
-    </b-tab>
-    <b-tab title="textarea" @click="fieldType = 'textarea'">
-      <b-form-textarea
-      v-model="newvalue"
-      placeholder="Enter something..."
-      rows="3"
-      max-rows="6"
-      @change="addNewValue"
-      ></b-form-textarea>
-    </b-tab>
-    <b-tab title="item" @click="fieldType = 'item'">
-      <ItemSelector :currentProp.sync="currentProp"/>
-    </b-tab>
-    <b-tab title="link" @click="fieldType = 'link'">
-      <b-form-input
-      v-model="link.name"
-      placeholder="name"
-      />
-      <b-form-input
-      v-model="link.href"
-      placeholder="link"
-      @change="addNewLink"/>
-    </b-tab>
-    <!-- <b-tab title="tiny" @click="fieldType = 'tiny'">
-
-    <editor
-
-    v-model="tinycontent"
-    :init="{
-    height: 500,
-    menubar: false,
-    plugins: [
-    'advlist autolink lists link image charmap print preview anchor',
-    'searchreplace visualblocks code fullscreen',
-    'insertdatetime media table paste code help wordcount'
-    ],
-    toolbar:
-    'undo redo | formatselect | bold italic backcolor | \
-    alignleft aligncenter alignright alignjustify | \
-    bullist numlist outdent indent | removeformat | help'
-  }"
-  />
-</b-tab> -->
-</b-tabs>
-</b-modal>
-
-{{item}}
+  {{item}}
 
 </p>
 </b-modal>
+
+<NewItemButton />
+
+
+
 </div>
 </template>
 
 <script>
-import * as Tension from '@/agents/tension'
+// import * as Tension from '@/agents/tension'
 
 export default {
   name: "NewItem",
   components: {
+    'NewItemButton': () => import('@/components/items/NewItemButton'),
     'ItemSelector': () => import('@/components/items/ItemSelector'),
-    // 'NodeLite': () => import('@/components/NodeLite'),
     'Values': () => import('@/components/items/Values'),
-    // 'Quasar': () => import('@/views/Quasar'),
-    // 'CKWysiwyg': () => import('@/views/CKWysiwyg'),
-    // 'editor': Editor
   },
   data(){
     return{
-      item : {},
+      // item : {},
       currentProp: {},
       link: {},
       field : null,
@@ -176,24 +146,17 @@ export default {
     }
   },
   methods:{
-    async handleOk(){
-      await this.save()
-      this.item = {}
-    },
-    newItem(){
-      this.$store.commit('app/setCurrentItem', null)
-      this.item = {}
-      this.tension = new Tension({name: "New Tension"})
-      console.log(this.tension)
-      this.item = this.tension.data
-      this.$bvModal.show("newItemModal")
-    },
-    // OLD from node verse
-    async save() {
+    // handleOk(){
+    //   console.log(this.item)
+    //   this.save()
+    //   // this.item = {}
+    // },
+    async handleOk() {
       console.log("save", this.item)
-      this.tension.save(this.item)
+      this.currentProp = {}
+      //this.tension.save(this.item)
       this.$store.commit('app/setCurrentItem', null)
-    //  this.tension = null
+      //  this.tension = null
       //this.tension = null
       //this.item = {}
       // this.tension1.test_change = "BIP"
@@ -207,11 +170,12 @@ export default {
     },
     fieldNameChanged(field_name){
       console.log(field_name)
-      if(this.clearing == false){
+      if(this.clearing == false && field_name.length > 0){
         let p = {name: field_name, values: []}
         this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
         var index = this.item['ve:properties'].findIndex(x => x.name==p.name);
         index === -1 ? this.item['ve:properties'].push(p) : alert(p.name+" already exist")
+this.field = {}
       }
     },
     clear_field(){
@@ -236,61 +200,40 @@ export default {
       this.link = {}
     },
 
-
-    // testAgents(){
-    //   console.log("ADDBUTTON")
-    //   let tension1 = new Tension({name: "Tension 1"})
-    //   tension1.print()
-    //   tension1.log("yohoho, hello!")
-    //
-    //   //tension1.alert()
-    //   tension1.send('theUser', {action: "name"})
-    //   window.env.removeAgentByName('fictif 1')
-    //   let agents = window.env.getAgents()
-    //   console.log(agents)
-    //
-    //   //  this.$router.push({ name: 'edit', params: {modele: this.modele} });
-    // },
   },
   watch:{
-    currentItem(){
-      console.log(this.currentItem)
-      if (this.currentItem != null){
-        this.tension = new Tension({name: "New Tension"})
-        console.log(this.tension)
-        this.item = this.currentItem
+    item(){
+      console.log(this.item)
+      if (this.item != null){
+      //  Object.assign(this.currentProp,{})
+        // if (Object.entries(this.item).length === 0){
+        //   this.tension = new Tension({name: "New Tension"})
+        //   console.log(this.tension)
+        //   Object.assign(this.item,this.tension.data)
+        //   console.log(this.item)
+        // }
+
+        // this.item['ve:age'] == undefined ? this.item['ve:age'] = -6 : ""
+        //
+        // this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
+
         this.$bvModal.show("newItemModal")
-      }else{
-        this.item == {}
       }
+
+      // if (this.currentItem != null){
+      //   this.tension = new Tension({name: "New Tension"})
+      //   console.log(this.tension)
+      //   this.item = this.currentItem
+      //   this.$bvModal.show("newItemModal")
+      // }else{
+      //   this.item == {}
+      // }
     }
   },
   computed:{
-    currentItem() {
+    item() {
       return this.$store.state.app.currentItem
-    },
-
+    }
   }
 }
 </script>
-
-<style>
-.floating-action-button {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index:3;
-}
-.add-item input {
-  outline: none;
-  border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  width: 100%;
-  transition: all 0.25s;
-  background: inherit;
-  color: white;
-}
-.add-item input:focus {
-  border-bottom-color: rgba(255, 255, 255, 1);
-}
-</style>
