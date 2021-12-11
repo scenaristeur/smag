@@ -27,11 +27,12 @@ export default {
   data(){
     return{
       // observables: [],
-      url : "https://spoggy-test13.solidcommunity.net/public/"
+      url : "https://agora.solidcommunity.net/public/blackboard"
     }
 
   },
   created(){
+    let debut = Date.now()
     // create two agents
     this.agent1 = new HelloAgent('agent1');
     this.agent2 = new HelloAgent('agent2');
@@ -48,9 +49,16 @@ export default {
       console.log('reply: ' + reply);
     });
 
-      this.agent2.send('sniffer1', 'Hello agent1!, a basic send');
+    //  this.agent2.send('sniffer1', 'Hello agent1!, a basic send');
 
-    this.agent2.send('sniffer1', {url : this.url});
+    this.agent2.request('sniffer1', {url : this.url})
+    .then(function(reply) {
+    //  let res = JSON.stringify(reply)
+      let delay = Date.now() - debut
+          console.log('reply from SNIFFR: ',delay , reply);
+          console.log(reply.resources[0].url, reply.resources[0].file)
+          alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
+        });
 
 
     this.env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})

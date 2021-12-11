@@ -5,6 +5,7 @@ import * as eve from  'evejs/dist/eve.custom-request.js';
 export function SnifferAgent(id) {
   // execute super constructor
   eve.Agent.call(this, id);
+  this.extend('request');
   this.count = 0
 
   // connect to all transports configured by the system
@@ -20,20 +21,25 @@ SnifferAgent.prototype.sayHello = function(to) {
 };
 
 SnifferAgent.prototype.receive = async function(from, message) {
- console.log("SNIFFER : "+from + ' said: ' + JSON.stringify(message));
+  console.log("SNIFFER : "+from + ' said: ' + JSON.stringify(message));
   // document.write(from + ' said: ' + JSON.stringify(message) + '<br>');
-let resources = await Vue.prototype.$getResources(message.url)
-console.log("$getResources", resources)
-return {resources: resources}
-// for (const r of resources){
-//   console.log(r)
-//   if (r.type == "folder"){
-//     r.resources = await Vue.prototype.$getResources(r.url)
-//   }
-// }
-//let resources = await getResources(message)
+  let url = message.url
+  if (message.type == "request"){
+    url = message.message.url
+  }
+  let resources = await Vue.prototype.$getResources(url)
+  console.log("$getResources", resources)
+  return {resources: resources};
+  //return {resources: resources}
+  // for (const r of resources){
+  //   console.log(r)
+  //   if (r.type == "folder"){
+  //     r.resources = await Vue.prototype.$getResources(r.url)
+  //   }
+  // }
+  //let resources = await getResources(message)
   //if (message.indexOf('Hello') === 0) {
-    // reply to the greeting
+  // reply to the greeting
   //  this.send(from, {resources: resources});
 
   // }else{
