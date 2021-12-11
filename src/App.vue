@@ -12,7 +12,7 @@
     <NewItem />
     {{session}}
     <Sma />
-    <small><i>0.0.1-sniffer agent</i></small>
+    <small><i>0.0.1-sniffer subscribeAgent </i></small>
   </div>
 </template>
 

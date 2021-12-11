@@ -45,6 +45,7 @@ import {
 // import { /*WS ,*/ SOLID} from "@inrupt/vocab-solid-common";
 //
 import * as sc from '@inrupt/solid-client-authn-browser'
+// import {   WebsocketNotification,} from "@inrupt/solid-client-notifications";
 // import * as diffler from 'diffler'
 
 const plugin = {
@@ -53,7 +54,7 @@ const plugin = {
     console.log(store)
 
     Vue.prototype.$getResources = async function(path){
-       console.log("path", path)
+      console.log("path", path)
       let resources = []
       const dataset = await getSolidDataset( path, { fetch: sc.fetch });
       let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
@@ -365,6 +366,88 @@ const plugin = {
     Vue.prototype.$createFolder = async function(f){
       await createContainerAt( f, { fetch: sc.fetch });
     }
+
+
+    Vue.prototype.$subscribe = async function(path){
+      //https://github.com/scenaristeur/solid-vue-panes/blob/b9b4446d7976242ba46a94c33f99f97079fc2401/src/store/modules/agora.js
+      console.log(path)
+      let plugin = this
+
+      let websocket = "wss://"+path.split('/')[2];
+      let socket = new WebSocket(websocket, ['solid.0.1.0']);
+      socket.onopen = function() {
+        this.send('sub '+path);
+        console.log("--------- STORE SUBSCRIBE TO",websocket, path)
+      }
+      socket.onmessage = async function(msg) {
+      //  console.log("m",msg)
+        if (msg.data && msg.data.slice(0, 3) === 'pub') {
+          console.log("pub",msg.data)
+          let container_url = msg.data.split(' ')[1]
+          if (msg.data.endsWith('/')){
+            let resources = await plugin.$getResources(container_url)
+            resources.forEach((r) => {
+              plugin.$subscribe(r.url)
+            });
+            console.log("socket", socket)
+            //
+          }
+          // const activityResource = await getSolidDataset(path);
+          // const activities = getThingAll(activityResource);
+          //  context.commit('setActivities', activities)
+        }
+      };
+    }
+
+
+
+
+    //     Vue.prototype.$subscribeEss = async function(resourceURL){
+    //       //https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/subscribe-to-notifications/
+    //       console.log("Subscribing", resourceURL)
+    //       // const gateway = "https://notification.pod.inrupt.com/";
+    //
+    //       const websocket = new WebsocketNotification(
+    //         resourceURL,
+    //         { fetch: sc.fetch/*, gateway*/ }
+    //       );
+    //       console.log("Subscription to", resourceURL)
+    //       websocket.on("connected", () =>
+    //       console.log("connected", websocket)
+    //       // setMessages((prev) => [
+    //       //   ...prev,
+    //       //   `Websocket connected; watching ${podRoot}`,
+    //       // ])
+    //     );
+    //
+    //     websocket.on("message", (message) =>
+    //     {
+    //       console.log('message', JSON.parse(message))
+    //     }
+    //     // setMessages((prev) => [...prev, formatMessage(message)])
+    //   );
+    //
+    //   websocket.on("closed", () =>
+    //   console.log("websocket closed")
+    //   //  setMessages((prev) => [...prev, "Websocket closed"])
+    // );
+    //
+    // websocket.on("error", (error) => {
+    //   /* eslint no-console: 0 */
+    //   console.error(error);
+    //   // setMessages((prev) => [
+    //   //   ...prev,
+    //   //   "Websocket error (see console for details)",
+    //   // ]);
+    // });
+    //
+    // // websocket.on("message", console.log);
+    // // websocket.on("*", console.log);
+    // // websocket.on("connect", console.log);
+    // // websocket.on("CREATE", console.log);
+    //
+    // websocket.connect();
+    // }
     //
     // Vue.prototype.$addWorkspaceToPod = async function(s){
     //   console.log(s, )

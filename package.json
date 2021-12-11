@@ -12,6 +12,7 @@
   "dependencies": {
     "@inrupt/solid-client": "^1.17.0",
     "@inrupt/solid-client-authn-browser": "^1.11.2",
+    "@inrupt/solid-client-notifications": "^0.1.0",
     "@inrupt/vocab-common-rdf": "^1.0.3",
     "@inrupt/vocab-solid-common": "^0.7.5",
     "@johmun/vue-tags-input": "^2.1.0",

@@ -19,6 +19,7 @@ import * as Board from '@/agents/acteur'
 
 import { HelloAgent } from '@/agents/HelloAgent.js';
 import { SnifferAgent } from '@/agents/SnifferAgent.js';
+import { SubscribeAgent } from '@/agents/SubscribeAgent.js';
 
 // import { Observable } from 'object-observer/dist/object-observer.min.js';
 
@@ -27,7 +28,7 @@ export default {
   data(){
     return{
       // observables: [],
-      url : "https://agora.solidcommunity.net/public/blackboard"
+      url : "https://agora.solidcommunity.net/public/blackboard/"
     }
 
   },
@@ -37,6 +38,7 @@ export default {
     this.agent1 = new HelloAgent('agent1');
     this.agent2 = new HelloAgent('agent2');
     this.sniffer1 = new SnifferAgent('sniffer1');
+    this.subscribe1 = new SubscribeAgent('subscribe1');
     console.log(this.agent1)
     console.log("sniffer",this.sniffer1)
 
@@ -51,14 +53,49 @@ export default {
 
     //  this.agent2.send('sniffer1', 'Hello agent1!, a basic send');
 
+
+    this.agent2.send('subscribe1', {url : this.url})
+    // .then(function(reply) {
+    //   //  let res = JSON.stringify(reply)
+    //   let delay = Date.now() - debut
+    //   console.log('reply FOLDER from subscribe1: ',delay , reply);
+    //   //  console.log(reply.resources[0].url, reply.resources[0].file)
+    //   //  alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
+    // });
+
+
+//let app = this
     this.agent2.request('sniffer1', {url : this.url})
     .then(function(reply) {
-    //  let res = JSON.stringify(reply)
+      //  let res = JSON.stringify(reply)
       let delay = Date.now() - debut
-          console.log('reply from SNIFFR: ',delay , reply);
-          console.log(reply.resources[0].url, reply.resources[0].file)
-          alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
-        });
+      console.log('reply from SNIFFR: ',delay , reply);
+      console.log(reply.resources[0].url, reply.resources[0].file)
+
+      // reply.resources.forEach((r) => {
+      //   console.log("res",r)
+      //   app.agent2.send('subscribe1', r)
+      //   // .then(function(reply) {
+      //   //   //  let res = JSON.stringify(reply)
+      //   //   let delay = Date.now() - debut
+      //   //   console.log('reply from subscribe1: ',delay , reply);
+      //   //   //  console.log(reply.resources[0].url, reply.resources[0].file)
+      //   //   //  alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
+      //   // });
+      //
+      // });
+
+    //  alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
+    });
+
+    // this.agent2.request('subscribe1', {url : this.url})
+    // .then(function(reply) {
+    //   //  let res = JSON.stringify(reply)
+    //   let delay = Date.now() - debut
+    //   console.log('reply from subscribe1: ',delay , reply);
+    //   //  console.log(reply.resources[0].url, reply.resources[0].file)
+    //   //  alert('reply from SNIFFR: '+delay+' '+  reply.resources[0].url+ ' '+ JSON.stringify(reply, null, 2));
+    // });
 
 
     this.env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
