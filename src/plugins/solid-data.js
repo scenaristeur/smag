@@ -94,6 +94,7 @@ const plugin = {
 
     Vue.prototype.$getResource = async function(r){
       //file is a Blob (see https://developer.mozilla.org/docs/Web/API/Blob)
+      console.log("read",r)
       const file = await getFile(
         r.url,               // File in Pod to Read
         { fetch: sc.fetch }       // fetch from authenticated session
@@ -103,7 +104,7 @@ const plugin = {
       //  console.log("The file is rawdata "+ `${isRawData(file)}`);
       r.file = file
 
-      //  return r
+      return r
       //  this.$store.commit('bureau/setResource',r)
       //this.$getContent(r.url)
     }
@@ -131,6 +132,7 @@ const plugin = {
         console.log(`File saved at ${getSourceUrl(savedFile)}`);
         //n.url = await getSourceUrl(savedFile)
         //  store.dispatch('nodes/saveNode', n)
+        
         return savedFile
       }catch(e){
         console.log(e)
@@ -371,27 +373,30 @@ const plugin = {
     Vue.prototype.$subscribe = async function(path){
       // SPEC https://github.com/solid/solid-spec/blob/f225c349dc3b804cdbe114c36ded8adb5b9f0b99/api-websockets.md
       //https://github.com/scenaristeur/solid-vue-panes/blob/b9b4446d7976242ba46a94c33f99f97079fc2401/src/store/modules/agora.js
-      console.log("subscribe", path)
+    //  console.log("subscribe", path)
       let plugin = this
 
       let websocket = "wss://"+path.split('/')[2];
       let socket = new WebSocket(websocket, ['solid.0.1.0']);
       socket.onopen = function() {
         this.send('sub '+path);
-        console.log("--------- STORE SUBSCRIBE TO",websocket, path)
+      //  console.log("--------- STORE SUBSCRIBE TO",websocket, path)
       }
       socket.onmessage = async function(msg) {
-      //  console.log("m",msg)
+        //  console.log("m",msg)
         if (msg.data && msg.data.slice(0, 3) === 'pub') {
           console.log("pub",msg.data)
-          let container_url = msg.data.split(' ')[1]
+          let url = msg.data.split(' ')[1]
           if (msg.data.endsWith('/')){
-            let resources = await plugin.$getResources(container_url)
+            let resources = await plugin.$getResources(url)
             resources.forEach((r) => {
               plugin.$subscribe(r.url)
             });
             //console.log("socket", socket)
             //
+          }else{
+            let file = await plugin.$getResource(url)
+            console.log("66666666666",file)
           }
           // const activityResource = await getSolidDataset(path);
           // const activities = getThingAll(activityResource);

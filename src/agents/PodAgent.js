@@ -2,10 +2,10 @@
 import Vue from 'vue'
 import * as eve from  'evejs/dist/eve.custom-request.js';
 
-export function SubscribeAgent(id) {
+export function PodAgent(id) {
   // execute super constructor
   eve.Agent.call(this, id);
-//  this.extend('request');
+  this.extend('request');
   this.count = 0
 
   // connect to all transports configured by the system
@@ -13,25 +13,45 @@ export function SubscribeAgent(id) {
 }
 
 // extend the eve.Agent prototype
-SubscribeAgent.prototype = Object.create(eve.Agent.prototype);
-SubscribeAgent.prototype.constructor = SubscribeAgent;
+PodAgent.prototype = Object.create(eve.Agent.prototype);
+PodAgent.prototype.constructor = PodAgent;
 
-SubscribeAgent.prototype.sayHello = function(to) {
+PodAgent.prototype.sayHello = function(to) {
   this.send(to, 'Hello ' + to + '!');
 };
 
-SubscribeAgent.prototype.receive = async function(from, message) {
-  //https://github.com/solid/node-solid-server/issues/933
-//  console.log("SubscribeAgent : "+from + ' said: ' + JSON.stringify(message));
+PodAgent.prototype.receive = async function(from, message) {
+  console.log("POD : "+from + ' said: ' + JSON.stringify(message));
   // document.write(from + ' said: ' + JSON.stringify(message) + '<br>');
+  let retour = {}
+  try{
+    let mess = message
+    if (message.type == "request"){
+      mess = message.message
+    }
+    if (mess.action == "read"){
+      let file = await Vue.prototype.$getResource(mess)
+      retour = file
+    }else if (mess.action == "create"){
+      let file = await Vue.prototype.$updateFile(mess)
+      retour = file
+    }else{
+      retour = "i don't understand"
+    }
+
+  }catch(e){
+    console.log(e)
+    retour = e
+  }
+
+  return retour
   // let url = message.url
   // if (message.type == "request"){
   //   url = message.message.url
   // }
-//  console.log("SubscribeAgent",message.url)
-   await Vue.prototype.$subscribe(message.url)
-  //console.log("subscribe retour", retour)
-//  return {retour: retour};
+  // let resources = await Vue.prototype.$getResources(url)
+  // console.log("$getResources", resources)
+  // return {resources: resources};
   //return {resources: resources}
   // for (const r of resources){
   //   console.log(r)
