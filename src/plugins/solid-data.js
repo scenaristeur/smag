@@ -369,8 +369,9 @@ const plugin = {
 
 
     Vue.prototype.$subscribe = async function(path){
+      // SPEC https://github.com/solid/solid-spec/blob/f225c349dc3b804cdbe114c36ded8adb5b9f0b99/api-websockets.md
       //https://github.com/scenaristeur/solid-vue-panes/blob/b9b4446d7976242ba46a94c33f99f97079fc2401/src/store/modules/agora.js
-      console.log(path)
+      console.log("subscribe", path)
       let plugin = this
 
       let websocket = "wss://"+path.split('/')[2];
@@ -389,7 +390,7 @@ const plugin = {
             resources.forEach((r) => {
               plugin.$subscribe(r.url)
             });
-            console.log("socket", socket)
+            //console.log("socket", socket)
             //
           }
           // const activityResource = await getSolidDataset(path);
