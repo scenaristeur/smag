@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import * as Environnement from '@/agents/environnement'
-import * as Acteur from '@/agents/acteur'
-import * as Board from '@/agents/acteur'
+// import * as Environnement from '@/agents/environnement'
+// import * as Acteur from '@/agents/acteur'
+// import * as Board from '@/agents/acteur'
 // import  'evejs/dist/eve.custom-request.js';
 
 import { HelloAgent } from '@/agents/HelloAgent.js';
@@ -98,24 +98,24 @@ export default {
     // });
 
 
-    this.env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
-    console.log(this.env)
-    this.board = new Board({name: "board"})
-    this.board.print()
-    this.acteur = new Acteur({name: "user"})
-
-    this.acteur.print()
-    this.acteur.log("yohoho, hello i'm the principal actor!")
-    let fictif = new Acteur({name: "fictif 1"})
-    console.log("fictif 1", fictif)
-    let agents = window.env.getAgents()
-    console.log(agents)
+    // this.env = new Environnement({name: "env", store: this.$store, type: 'Vue2', vue: this})
+    // console.log(this.env)
+    // this.board = new Board({name: "board"})
+    // this.board.print()
+    // this.acteur = new Acteur({name: "user"})
+    //
+    // this.acteur.print()
+    // this.acteur.log("yohoho, hello i'm the principal actor!")
+    // let fictif = new Acteur({name: "fictif 1"})
+    // console.log("fictif 1", fictif)
+    // let agents = window.env.getAgents()
+    // console.log(agents)
   },
   methods:{
-    boardTest(){
-      this.acteur.send("board", {action: "put", content: {text: "hello", world: "world"}})
-      this.acteur.send("board", {action: "read"})
-    }
+    // boardTest(){
+    //   this.acteur.send("board", {action: "put", content: {text: "hello", world: "world"}})
+    //   this.acteur.send("board", {action: "read"})
+    // }
   },
   watch:{
     //     agents(){
@@ -133,9 +133,9 @@ export default {
     //     }
   },
   computed:{
-    agents(){
-      return this.$store.state.sma.agents
-    },
+    // agents(){
+    //   return this.$store.state.sma.agents
+    // },
   }
 }
 </script>

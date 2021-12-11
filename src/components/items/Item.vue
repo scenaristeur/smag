@@ -9,17 +9,17 @@
   </b-button>
 </a> -->
 {{item['ve:age']}}
-<b-card-header>
+<!-- <b-card-header>
   <b>What is :       </b> {{item['ve:wi']}}
   <hr>
   <b>What should be: </b>{{item['ve:wsb']}}
-</b-card-header>
+</b-card-header> -->
 
 
-<b-card-text>
+<!-- <b-card-text>
   <div v-html="item['ve:proposition']">
   </div>
-</b-card-text>
+</b-card-text> -->
 
 <b-card-footer>
   <span v-if="item['ve:url'] != undefined">remote</span><span v-else><b-button @click="putOnline">local</b-button></span>

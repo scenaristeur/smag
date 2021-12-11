@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import solid from './modules/solid'
 import app from './modules/app'
 import local from './modules/local'
-import sma from './modules/sma'
+//import sma from './modules/sma'
 
 
 Vue.use(Vuex)
@@ -16,6 +16,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    solid, app, local, sma
+    solid, app, local,// sma
   }
 })

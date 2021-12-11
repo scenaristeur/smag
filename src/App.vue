@@ -11,7 +11,7 @@
     <NewNote />
     <NewItem />
     {{session}}
-    <Sma />
+    <!-- <Sma /> -->
     <small><i>0.0.1-sniffer subscribeAgent </i></small>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
     'Login': () => import('@/components/solid/Login'),
     'NewNote': () => import('@/views/sharing/NewNote'),
     'NewItem': () => import('@/components/items/NewItem'),
-    'Sma': () => import('@/views/Sma'),
+    // 'Sma': () => import('@/views/Sma'),
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),
   },

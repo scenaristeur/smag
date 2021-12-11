@@ -29,7 +29,7 @@
 
       <b-row v-for="p in item['ve:properties']" :key="p.name">
         <b-col sm="3">
-          <label for="name"><code>{{p.name}}</code>:</label>
+          <label for="name"><code>{{p.label || p.name}}</code>:</label>
         </b-col>
         <b-col sm="9">
 
@@ -76,7 +76,7 @@
     </b-col>
   </b-row>
 
-  <b-modal id="fieldModal" size="xl" :title="item['ve:name']+' -> '+currentProp.name">
+  <b-modal id="fieldModal" size="xl" :title="item['ve:name']+' -> '+currentProp.label || currentProp.name">
     <!-- {{ currentProp}} -->
     <b-tabs content-class="mt-3">
       <b-tab title="text" active @click="fieldType = 'text'">
@@ -123,7 +123,8 @@
 </template>
 
 <script>
-// import * as Tension from '@/agents/tension'
+import * as schema from '@/models/tension.json'
+
 
 export default {
   name: "NewItem",
@@ -134,7 +135,7 @@ export default {
   },
   data(){
     return{
-      // item : {},
+      item : {},
       currentProp: {},
       link: {},
       field : null,
@@ -145,6 +146,11 @@ export default {
       // privacy: "private"
     }
   },
+  created(){
+      //this.schema = Object.assign({}, schema.default)
+    // this.tension = new Tension()
+    // console.log(this.tension)
+  },
   methods:{
     // handleOk(){
     //   console.log(this.item)
@@ -154,12 +160,20 @@ export default {
     async handleOk() {
       console.log("save", this.item)
       this.currentProp = {}
-      //this.tension.save(this.item)
+
+      await this.$store.dispatch('local/saveItem', this.item)
+      await this.$store.dispatch('local/getItems', this.item)
+      //  this.tension.save(this.item)
       this.$store.commit('app/setCurrentItem', null)
       //  this.tension = null
       //this.tension = null
-      //this.item = {}
+    //  Object.assign(this.item, {})
       // this.tension1.test_change = "BIP"
+      //this.item = null
+
+    //  this.item = Object.assign({}, schema.default)
+
+    //  console.log("schema",this.schema)
 
       // await this.$store.dispatch('nodes/saveNode', this.node);
       // this.$store.commit('nodes/setCurrentNode', null)
@@ -175,7 +189,7 @@ export default {
         this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
         var index = this.item['ve:properties'].findIndex(x => x.name==p.name);
         index === -1 ? this.item['ve:properties'].push(p) : alert(p.name+" already exist")
-this.field = {}
+        this.field = {}
       }
     },
     clear_field(){
@@ -190,6 +204,7 @@ this.field = {}
     },
     addNewValue(){
       let val = {value: this.newvalue,  type: this.fieldType}
+    //  console.log(val, this.schema)
       this.currentProp.values.push(val)
       this.newvalue = null
     },
@@ -202,10 +217,21 @@ this.field = {}
 
   },
   watch:{
-    item(){
-      console.log(this.item)
-      if (this.item != null){
-      //  Object.assign(this.currentProp,{})
+    currentItem(){
+      console.log("schema", schema)
+      console.log(this.currentItem)
+      if (this.currentItem != null){
+        if (Object.entries(this.currentItem).length === 0){
+          this.currentProp = {}
+          // console.log("schema", this.schema)
+          this.item = Object.assign({}, schema.default)
+          console.log("assign", this.item)
+        }else{
+          this.item = this.currentItem
+        }
+        console.log(this.item)
+        // console.log("schema", this.schema)
+        //  Object.assign(this.currentProp,{})
         // if (Object.entries(this.item).length === 0){
         //   this.tension = new Tension({name: "New Tension"})
         //   console.log(this.tension)
@@ -218,6 +244,8 @@ this.field = {}
         // this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
 
         this.$bvModal.show("newItemModal")
+      }else{
+        this.item = null
       }
 
       // if (this.currentItem != null){
@@ -231,7 +259,7 @@ this.field = {}
     }
   },
   computed:{
-    item() {
+    currentItem() {
       return this.$store.state.app.currentItem
     }
   }
