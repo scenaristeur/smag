@@ -55,6 +55,69 @@ const plugin = {
 
     Vue.prototype.$getResources = async function(path){
       console.log("path", path)
+      //let resources = []
+      const dataset = await getSolidDataset( path, { fetch: sc.fetch });
+      let resources  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+      .map(u => {
+
+let r = {url: u, parent: path}
+        let parts = u.split('/')
+        if(u.endsWith('/')){
+          r.name = parts[parts.length - 2]
+          r.type = "folder"
+          r.icon = "📁"
+        }else{
+          r.name = parts[parts.length - 1]
+          r.type = "file"
+          r.icon = "📄"
+        }
+
+      return r
+      })
+      //  console.log("remotes",remotesUrl)
+      return resources
+    }
+
+    Vue.prototype.$getResourcesDetails = async function(path){
+      console.log("path", path)
+      let resources = []
+      const dataset = await getSolidDataset( path, { fetch: sc.fetch });
+      let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
+      //  console.log("remotes",remotesUrl)
+
+      for(const u of remotesUrl){
+        //resources = remotesUrl.map(function (u) {
+        let r = {url: u, parent: path}
+        r.file = await getFile(
+          u,               // File in Pod to Read
+          { fetch: sc.fetch }       // fetch from authenticated session
+        );
+
+        let parts = u.split('/')
+        if(u.endsWith('/')){
+          r.name = parts[parts.length - 2]
+          r.type = "folder"
+          r.icon = "📁"
+          //r.resources = this.$getResources(r.url)
+          //store.commit('app/addFolder',r)
+          //child.value = {type:'folder', url:c, text: text}
+          //  child.html= "📁"+text
+        }else{
+          r.name = parts[parts.length - 1]
+          r.type = "file"
+          r.icon = "📄"
+          //store.commit('app/addFile',r)
+          //child.value = {type: "file", url:c, text: child.text}
+        }
+
+        //return r
+        resources.push(r)
+      }
+
+      return resources
+    }
+    Vue.prototype.$getResourcesFull = async function(path){
+      console.log("path", path)
       let resources = []
       const dataset = await getSolidDataset( path, { fetch: sc.fetch });
       let remotesUrl  = await getContainedResourceUrlAll(dataset,{fetch: sc.fetch} )
@@ -132,7 +195,7 @@ const plugin = {
         console.log(`File saved at ${getSourceUrl(savedFile)}`);
         //n.url = await getSourceUrl(savedFile)
         //  store.dispatch('nodes/saveNode', n)
-        
+
         return savedFile
       }catch(e){
         console.log(e)

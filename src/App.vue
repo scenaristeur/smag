@@ -5,8 +5,12 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <Browser />
+
+  <!-- <Hello /> -->
     <router-view/>
     <hr>
+
     <Login />
     <NewNote />
     <NewItem />
@@ -16,12 +20,24 @@
   </div>
 </template>
 
+
 <script>
+// import externalComponent from '@/utils/external-component';
+
+// const Browser = () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.ae504fb4d5080011b75e.umd.min.js');
+// import externalComponent from '@/utils/external-component';
+//
+// const Hello = () => externalComponent('https://components.solidcommunity.net/public/hello/Hello.bdd71b8bbb487af4de05.umd.min.js');
+
 export default {
   name: "App",
   components: {
     'Navbar': () => import('@/components/layout/Navbar'),
     'Login': () => import('@/components/solid/Login'),
+    // Hello,
+    // Browser: () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.ae504fb4d5080011b75e.umd.min.js'),
+    // Browser: () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.umd.min.js'),
+    'Browser': () => import('@/components/browser/Browser'),
     'NewNote': () => import('@/views/sharing/NewNote'),
     'NewItem': () => import('@/components/items/NewItem'),
     // 'Sma': () => import('@/views/Sma'),
