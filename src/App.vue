@@ -7,7 +7,7 @@
     </div>
     <Browser />
 
-  <!-- <Hello /> -->
+    <!-- <Hello /> -->
     <router-view/>
     <hr>
 
@@ -44,9 +44,10 @@ export default {
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),
   },
-  created(){
+  async created(){
     this.$checkSession()
-    // not compatible with route.query this.$checkSession()
+    //this.$automergeTest()
+
 
   },
   mounted(){

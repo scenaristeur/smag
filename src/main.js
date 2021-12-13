@@ -8,6 +8,8 @@ import SolidPodPlugin from './plugins/solid-pod';
 Vue.use(SolidPodPlugin, {store: store});
 import SolidDataPlugin from './plugins/solid-data';
 Vue.use(SolidDataPlugin, {store: store});
+import AutomergePlugin from './plugins/automerge';
+Vue.use(AutomergePlugin, {store: store});
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // Import Bootstrap an BootstrapVue CSS files (order is important)

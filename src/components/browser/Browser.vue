@@ -8,8 +8,11 @@
         <b-button title="Home" @click="path={url:pod.storage}">
           <b-icon icon="house-fill" aria-hidden="true"></b-icon>
         </b-button>
-        <b-button title="New document">
-          <b-icon icon="file-earmark" aria-hidden="true"></b-icon>
+        <b-button title="New document" @click="create">
+          <b-icon icon="file-earmark" aria-hidden="true" ></b-icon>
+        </b-button>
+        <b-button title="New document" @click="load">
+          load
         </b-button>
         <b-button title="New Folder" @click="init_folder" variant="info"><b-icon-folder-plus></b-icon-folder-plus></b-button>
         <b-button title="Upload Files" @click="$refs.fileInput.$el.childNodes[0].click()" variant="info"> <b-icon-files></b-icon-files></b-button>
@@ -116,11 +119,38 @@ export default {
       new_location:"",
       new_folder:"",
       files:[],
+      docId: ""
     }
+  },
+  async created(){
+    await this.$store.dispatch('local/getItems', {type: "tension"})
   },
   methods: {
     check(){
       this.$checkSession()
+    },
+    async create(){
+
+      let d = {name: "one", date: "two"}
+      let doc = await this.$createAM(d)
+      console.log(doc)
+      let changed = await this.$changeAM(doc, {yipy: "pop", date: Date.now()})
+      console.log("changed", changed)
+      // not compatible with route.query this.$checkSession()
+      let result = await this.$saveAM(changed)
+      result.type = "tension"
+      await this.$store.dispatch('local/saveItem', result)
+
+      console.log("save", result)
+      this.docId = result.id
+      //  this.$load()
+    },
+
+    async load(){
+      let items = await this.$store.dispatch('local/getItems', {type: 'test'})
+      console.log(items)
+      // let doc = await this.$loadAM(bytes)
+      // console.log("doc", doc)
     },
     async explore(path){
       this.loading = true
@@ -128,72 +158,72 @@ export default {
       this.loading = false
     },
     selected(item){
-     item.type == "folder" ?   this.$store.dispatch('solid/updateFolder', item.url) : this.$store.dispatch('solid/updateFile', item)
-   },
-   init_folder(){
-     this.$bvModal.show("folder-modal")
-   },
-   async createFolder(){
-     console.log(this.new_folder)
-     if (this.new_folder.length > 0){
-       //  this.new_folder =  ! this.new_folder.endsWith("/") ? this.new_folder+"/" : this.new_folder
-       let f = this.folder.url+this.new_folder
-       console.log(f)
-       // if( !(await fc.itemExists(f)) ) {
-       //   await fc.createFolder(f) // only create if it doesn't already exist
-       // }else{
-       //   alert (f+" already exists")
-       // }
-       // this.updateFolder(this.folder.url)
-     }else{
-       alert("folder name can not be empty")
-     }
-   },
-   right(item){
-     console.log("right",item)
-     this.contextTitle = item.name
-     this.newName = item.name
-     this.$bvModal.show("context-menu")
-     this.currentItem = item
-   },
-   init_trash(item){
-     console.log(item)
-     this.$bvModal.show("confirm-trash")
-     this.currentItem = item
-   },
-   init_move(item){
-     console.log(item)
-     this.$bvModal.show("move")
-     this.currentItem = item
-     this.new_location = item.url
-   },
-   async  move(){
-     // console.log("Move",this.currentItem.type, this.currentItem.url, "to", this.new_location)
-     // try{
-     //   this.currentItem.type == "folder" ? await fc.move( this.currentItem.url, this.new_location ) : await fc.move( this.currentItem.url, this.new_location )
-     //   this.updateFolder(this.folder.url)
-     // }
-     // catch(e){
-     //   this.makeToast("Error", e, "danger")
-     // }
-   },
-   async  trash(){
-     console.log("Trash",this.currentItem.type,this.currentItem.url)
-     // if (this.currentItem.type != "folder"){
-     //   await deleteFile(
-     //     this.currentItem.url
-     //   );
-     //   console.log("File deleted !");
-     //   this.makeToast("success !", "File deleted !", "success")
-     // }else{
-     //   await  fc.deleteFolder(this.currentItem.url)
-     // }
-     // this.updateFolder(this.folder.url)
-   },
-   updateFolder(folder){
-     console.log(folder)
-    // this.$store.dispatch('solid/updateFolder', folder)
-   }
+      item.type == "folder" ?   this.$store.dispatch('solid/updateFolder', item.url) : this.$store.dispatch('solid/updateFile', item)
+    },
+    init_folder(){
+      this.$bvModal.show("folder-modal")
+    },
+    async createFolder(){
+      console.log(this.new_folder)
+      if (this.new_folder.length > 0){
+        //  this.new_folder =  ! this.new_folder.endsWith("/") ? this.new_folder+"/" : this.new_folder
+        let f = this.folder.url+this.new_folder
+        console.log(f)
+        // if( !(await fc.itemExists(f)) ) {
+        //   await fc.createFolder(f) // only create if it doesn't already exist
+        // }else{
+        //   alert (f+" already exists")
+        // }
+        // this.updateFolder(this.folder.url)
+      }else{
+        alert("folder name can not be empty")
+      }
+    },
+    right(item){
+      console.log("right",item)
+      this.contextTitle = item.name
+      this.newName = item.name
+      this.$bvModal.show("context-menu")
+      this.currentItem = item
+    },
+    init_trash(item){
+      console.log(item)
+      this.$bvModal.show("confirm-trash")
+      this.currentItem = item
+    },
+    init_move(item){
+      console.log(item)
+      this.$bvModal.show("move")
+      this.currentItem = item
+      this.new_location = item.url
+    },
+    async  move(){
+      // console.log("Move",this.currentItem.type, this.currentItem.url, "to", this.new_location)
+      // try{
+      //   this.currentItem.type == "folder" ? await fc.move( this.currentItem.url, this.new_location ) : await fc.move( this.currentItem.url, this.new_location )
+      //   this.updateFolder(this.folder.url)
+      // }
+      // catch(e){
+      //   this.makeToast("Error", e, "danger")
+      // }
+    },
+    async  trash(){
+      console.log("Trash",this.currentItem.type,this.currentItem.url)
+      // if (this.currentItem.type != "folder"){
+      //   await deleteFile(
+      //     this.currentItem.url
+      //   );
+      //   console.log("File deleted !");
+      //   this.makeToast("success !", "File deleted !", "success")
+      // }else{
+      //   await  fc.deleteFolder(this.currentItem.url)
+      // }
+      // this.updateFolder(this.folder.url)
+    },
+    updateFolder(folder){
+      console.log(folder)
+      // this.$store.dispatch('solid/updateFolder', folder)
+    }
   },
   watch:{
     path(){
@@ -208,17 +238,17 @@ export default {
       }
     },
     async  files (files) {
-    console.log(files)
-    let folder = this.folder.url
-    console.log(folder)
-    await   files.forEach(async function(f, i)  {
-      console.log(f,i)
-      let uri = f.webkitRelativePath.length > 0 ? folder+f.webkitRelativePath : folder+f.name
-      console.log(uri, f, f.type)
-    //  await fc.createFile(uri, f, f.type)
-    })
-    //this.updateFolder(this.folder.url)
-  },
+      console.log(files)
+      let folder = this.folder.url
+      console.log(folder)
+      await   files.forEach(async function(f, i)  {
+        console.log(f,i)
+        let uri = f.webkitRelativePath.length > 0 ? folder+f.webkitRelativePath : folder+f.name
+        console.log(uri, f, f.type)
+        //  await fc.createFile(uri, f, f.type)
+      })
+      //this.updateFolder(this.folder.url)
+    },
   },
   computed:{
     pod() {
