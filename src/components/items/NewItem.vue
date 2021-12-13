@@ -166,7 +166,7 @@ export default {
 
       await this.$store.dispatch('local/saveItem', this.item)
       await this.$store.dispatch('local/getItems', this.item)
-      //  this.tension.save(this.item)
+      this.tension.save(this.item)
       this.$store.commit('app/setCurrentItem', null)
       //  this.tension = null
       //this.tension = null

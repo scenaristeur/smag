@@ -10,15 +10,15 @@
 </a> -->
 {{item['ve:age']}}
 <!-- <b-card-header>
-  <b>What is :       </b> {{item['ve:wi']}}
-  <hr>
-  <b>What should be: </b>{{item['ve:wsb']}}
+<b>What is :       </b> {{item['ve:wi']}}
+<hr>
+<b>What should be: </b>{{item['ve:wsb']}}
 </b-card-header> -->
 
 
 <!-- <b-card-text>
-  <div v-html="item['ve:proposition']">
-  </div>
+<div v-html="item['ve:proposition']">
+</div>
 </b-card-text> -->
 
 <b-card-footer>
@@ -77,14 +77,16 @@ export default {
         }
         this.agent4.request(this.podAgent1.id, message)
         // this.agent4.request('agent3', 'Hello agent1! a request')
-        .then(function(reply) {
+        .then(async function(reply) {
           console.log('reply: ', reply);
           try{
-          console.log(reply.internal_resourceInfo.sourceIri)
-          app.item['ve:url'] = reply.internal_resourceInfo.sourceIri
-        }catch(e){
-          console.log(e)
-        }
+            console.log(reply.internal_resourceInfo.sourceIri)
+            app.item['ve:url'] = reply.internal_resourceInfo.sourceIri
+            await app.$store.dispatch('local/saveItem', app.item)
+            app.$store.dispatch('local/getItems', {type: "tension"})
+          }catch(e){
+            console.log(e)
+          }
         });
       }catch(e){
         console.log("e",e)
