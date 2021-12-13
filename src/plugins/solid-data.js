@@ -71,7 +71,6 @@ let r = {url: u, parent: path}
           r.type = "file"
           r.icon = "📄"
         }
-
       return r
       })
       //  console.log("remotes",remotesUrl)
