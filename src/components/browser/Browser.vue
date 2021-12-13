@@ -2,27 +2,29 @@
   <b-container v-if="path != null">
     <b-button-toolbar>
       <b-button-group class="mx-1">
-        <b-button title="Check" @click="check">check
-          <!-- <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> -->
-        </b-button>
-        <b-button title="Home" @click="path={url:pod.storage}">
+
+        <b-button title="Home" @click="path={url:pod.storage}" variant="info">
           <b-icon icon="house-fill" aria-hidden="true"></b-icon>
         </b-button>
+        <b-button variant="info" @click="path={url: path.parent}"><b-icon-arrow-up></b-icon-arrow-up></b-button>
+
+        <b-button title="New Folder" @click="init_folder" ><b-icon-folder-plus></b-icon-folder-plus></b-button>
+        <b-button title="Upload Files" @click="$refs.fileInput.$el.childNodes[0].click()" > <b-icon-files></b-icon-files></b-button>
+        <b-button title="Upload Folder" @click="$refs.folderInput.$el.childNodes[0].click()"> <b-icon-folder-symlink></b-icon-folder-symlink></b-button>
+
         <b-button title="New document" @click="create">
           <b-icon icon="file-earmark" aria-hidden="true" ></b-icon>
         </b-button>
         <b-button title="New document" @click="load">
           load
         </b-button>
-        <b-button title="New Folder" @click="init_folder" variant="info"><b-icon-folder-plus></b-icon-folder-plus></b-button>
-        <b-button title="Upload Files" @click="$refs.fileInput.$el.childNodes[0].click()" variant="info"> <b-icon-files></b-icon-files></b-button>
-        <b-button title="Upload Folder" @click="$refs.folderInput.$el.childNodes[0].click()" variant="info"> <b-icon-folder-symlink></b-icon-folder-symlink></b-button>
-        <b-button variant="info" ><b-icon-arrow-up></b-icon-arrow-up></b-button>
+        <b-button title="Check" @click="check">check
+        </b-button>
       </b-button-group>
 
     </b-button-toolbar>
 
-    path : {{path.url}} <span v-if="loading==true">Loading...</span>
+    path : {{path}} <span v-if="loading==true">Loading...</span>
     <!-- resources : {{resources}} -->
 
     <b-list-group class="scroll">
@@ -147,14 +149,19 @@ export default {
     },
 
     async load(){
-      let items = await this.$store.dispatch('local/getItems', {type: 'test'})
+      let items = await this.$store.dispatch('local/getItems', {type: 'tension'})
       console.log(items)
       // let doc = await this.$loadAM(bytes)
       // console.log("doc", doc)
     },
     async explore(path){
       this.loading = true
-      this.resources = await this.$getResources(path.url)
+      if(path.url.endsWith("/")){
+        this.resources = await this.$getResources(path.url)
+      }else{
+        console.log(path)
+      }
+
       this.loading = false
     },
     selected(item){
@@ -167,7 +174,7 @@ export default {
       console.log(this.new_folder)
       if (this.new_folder.length > 0){
         //  this.new_folder =  ! this.new_folder.endsWith("/") ? this.new_folder+"/" : this.new_folder
-        let f = this.folder.url+this.new_folder
+        let f = this.path+this.new_folder
         console.log(f)
         // if( !(await fc.itemExists(f)) ) {
         //   await fc.createFolder(f) // only create if it doesn't already exist
@@ -239,7 +246,7 @@ export default {
     },
     async  files (files) {
       console.log(files)
-      let folder = this.folder.url
+      let folder = this.path.url
       console.log(folder)
       await   files.forEach(async function(f, i)  {
         console.log(f,i)
