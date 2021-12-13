@@ -14,7 +14,7 @@
       <div v-else>{{v}}</div>
     </b-col>
     <b-col cols="1">
-      <b-button v-if="$router.currentRoute.path == '/edit'" variant="outline-secondary" @click="remove(i)">X</b-button>
+      <b-button v-if="currentItem != null" variant="outline-secondary" @click="remove(i)">X</b-button>
     </b-col>
   </b-row>
     </b-list-group-item>
@@ -34,6 +34,11 @@ methods:{
     let values = this.values.splice(i,1);
     console.log(values)
     this.$emit('update:values', values)
+  }
+},
+computed:{
+  currentItem() {
+    return this.$store.state.app.currentItem
   }
 }
 }

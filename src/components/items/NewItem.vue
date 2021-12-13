@@ -110,7 +110,7 @@
     </b-tabs>
   </b-modal>
 
-  {{item}}
+  <!-- {{item}} -->
 
 </p>
 </b-modal>
@@ -123,7 +123,8 @@
 </template>
 
 <script>
-import * as schema from '@/models/tension.json'
+// import * as schema from '@/models/tension.json'
+import * as Tension from '@/agents/models/tension'
 
 
 export default {
@@ -147,8 +148,10 @@ export default {
     }
   },
   created(){
-      //this.schema = Object.assign({}, schema.default)
-    // this.tension = new Tension()
+
+
+    //this.schema = Object.assign({}, schema.default)
+    this.tension = new Tension()
     // console.log(this.tension)
   },
   methods:{
@@ -167,13 +170,13 @@ export default {
       this.$store.commit('app/setCurrentItem', null)
       //  this.tension = null
       //this.tension = null
-    //  Object.assign(this.item, {})
+      //  Object.assign(this.item, {})
       // this.tension1.test_change = "BIP"
       //this.item = null
 
-    //  this.item = Object.assign({}, schema.default)
+      //  this.item = Object.assign({}, schema.default)
 
-    //  console.log("schema",this.schema)
+      //  console.log("schema",this.schema)
 
       // await this.$store.dispatch('nodes/saveNode', this.node);
       // this.$store.commit('nodes/setCurrentNode', null)
@@ -204,7 +207,7 @@ export default {
     },
     addNewValue(){
       let val = {value: this.newvalue,  type: this.fieldType}
-    //  console.log(val, this.schema)
+      //  console.log(val, this.schema)
       this.currentProp.values.push(val)
       this.newvalue = null
     },
@@ -218,13 +221,17 @@ export default {
   },
   watch:{
     currentItem(){
-      console.log("schema", schema)
+      //  console.log("schema", schema)
       console.log(this.currentItem)
       if (this.currentItem != null){
         if (Object.entries(this.currentItem).length === 0){
           this.currentProp = {}
+          this.tension = new Tension({name: "New Tension"})
           // console.log("schema", this.schema)
-          this.item = Object.assign({}, schema.default)
+          //this.tension.init()
+          console.log(this.tension)
+          //this.item = this.tension.data
+          this.item =  Object.assign({}, this.tension.data)
           console.log("assign", this.item)
         }else{
           this.item = this.currentItem
@@ -244,8 +251,6 @@ export default {
         // this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
 
         this.$bvModal.show("newItemModal")
-      }else{
-        this.item = null
       }
 
       // if (this.currentItem != null){
