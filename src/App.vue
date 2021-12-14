@@ -18,7 +18,7 @@
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
-    <small><i>0.0.2 - automerge </i></small>
+    <small><i>0.0.2 - lines </i></small>
   </div>
 </template>
 
