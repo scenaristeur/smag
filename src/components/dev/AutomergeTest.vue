@@ -37,7 +37,7 @@
     <b-button v-if="editing != null" @click="cancel" variant="light">Cancel</b-button>
     <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
 
-    {{ modeles}}
+    <!-- {{ modeles}} -->
 
     <Nodes />
 
