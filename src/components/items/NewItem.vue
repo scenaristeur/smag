@@ -163,7 +163,6 @@ export default {
     async handleOk() {
       console.log("save", this.item)
       this.currentProp = {}
-
       await this.$store.dispatch('local/saveItem', this.item)
       await this.$store.dispatch('local/getItems', this.item)
       this.tension.save(this.item)

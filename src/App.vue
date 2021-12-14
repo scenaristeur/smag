@@ -5,18 +5,19 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <Browser />
+
 
     <!-- <Hello /> -->
     <router-view/>
     <hr>
-
+<Checklist />
     <Login />
+        <Browser />
     <NewNote />
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
-    <small><i>0.0.1-sniffer subscribeAgent </i></small>
+    <small><i>0.0.2 - automerge </i></small>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ export default {
     'Browser': () => import('@/components/browser/Browser'),
     'NewNote': () => import('@/views/sharing/NewNote'),
     'NewItem': () => import('@/components/items/NewItem'),
+    'Checklist': () => import('@/components/dev/Checklist'),
     // 'Sma': () => import('@/views/Sma'),
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),

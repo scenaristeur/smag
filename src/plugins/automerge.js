@@ -30,6 +30,10 @@ const plugin = {
       return await Automerge.load(data)
     }
 
+    Vue.prototype.$loadAMWithId = async function(data){
+      return await Automerge.load(data.doc, data.id)
+    }
+
 
     Vue.prototype.$automergeTest = async function(){
 
