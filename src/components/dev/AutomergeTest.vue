@@ -1,43 +1,27 @@
 <template>
   <div>
-    AM
-    CRUD
-    <ol>
-      <li>
-        <b-row>
-          <b-col sm="3">
-            <label for="name">Name:</label>
-          </b-col>
-          <b-col sm="9">
-            <b-form-input id="name" v-model="item['ve:name']" autocomplete="off" autofocus />
-          </b-col>
-          <b-col sm="3">
-            <label for="age"><code>Age</code>:</label>
-          </b-col>
-          <b-col>
-            <b-form-input
-            id="age"
-            v-model="item['ve:age']"
-            required type="number"  />
-          </b-col>
-        </b-row>
-        <b-button @click="create" variant="info" v-if="editing == null">Create</b-button>
-      </li>
-      <li v-if="editing != null">
-        <b-button @click="update">Update</b-button>
-        <b-button @click="cancel" variant="info">Cancel</b-button>
-      </li>
-      <li>
-        <b-button @click="readAll" variant="info">Read All</b-button>
-        <b-button @click="readOne">Read One</b-button>
-      </li>
-      <li>
-        <b-button @click="remove">Remove</b-button>
-      </li>
-    </ol>
-
+    <b-row>
+      <b-col sm="3">
+        <label for="name">Name:</label>
+      </b-col>
+      <b-col sm="9">
+        <b-form-input id="name" ref="name" v-model="item['ve:name']" autocomplete="off" autofocus />
+      </b-col>
+      <b-col sm="3">
+        <label for="age"><code>Age</code>:</label>
+      </b-col>
+      <b-col>
+        <b-form-input
+        id="age"
+        v-model="item['ve:age']"
+        required type="number"  />
+      </b-col>
+    </b-row>
+    <b-button @click="create" variant="info" v-if="editing == null">Create</b-button>
+    <b-button v-if="editing != null" @click="update" variant="info">Update</b-button>
+    <b-button v-if="editing != null" @click="cancel" variant="light">Cancel</b-button>
+    <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
     <Nodes />
-
 
   </div>
 </template>
@@ -57,42 +41,43 @@ export default {
   created(){
     this.init()
   },
+  mounted(){
+    this.$refs.name.focus()
+  },
   methods:{
     async create(){
       await this.$store.dispatch('local/create', this.item)
       this.init()
-    },
-    readOne(){
-      console.log("readOne")
+
     },
     async readAll(){
-      console.log("readAll")
       await this.$store.dispatch('local/getItems')
     },
     async update(){
-      console.log("update")
-      console.log(this.editing, this.item)
       await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
       this.init()
-      this.$store.commit('local/editing', null)
     },
     cancel(){
-      console.log("cancel")
-      this.$store.commit('local/editing', null)
+      this.init()
     },
     remove(){
-      console.log("remove")
+      this.$store.dispatch('local/delete', this.editing)
+      this.init()
     },
     init(){
       this.item  = Object.assign({}, this.modele)
       this.$store.dispatch('local/getItems')
+      this.$store.commit('local/editing', null)
     }
   },
   watch:{
     editing(){
-      console.log(this.editing)
-      this.item = this.editing != null ? Object.assign({}, this.editing.doc) : Object.assign({}, this.modele)
-      console.log(this.item)
+      if(this.editing != null){
+        this.item = Object.assign({}, this.editing.doc)
+      }else{
+        this.item = Object.assign({}, this.modele)
+      }
+      this.$refs.name.focus()
     }
   },
   computed:{
