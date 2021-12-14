@@ -44,7 +44,7 @@ const actions = {
     }
   },
   async getItems(context) {
-    context.state.items = [];
+    let local_items = [];
     let items = await idb.getItems();
     items.forEach(async function(i) {
 
@@ -56,8 +56,9 @@ const actions = {
       // }
       // console.log(i)
       console.log(i)
-      context.state.items.push(i);
+      local_items.push(i);
     });
+    context.state.items = local_items
   },
   async create(context, item){
     item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
@@ -70,9 +71,10 @@ const actions = {
   async update(context, modif){
     console.log("modif", modif.old, modif.new)
     modif.new['ve:updated'] = Date.now()
-    let newDoc = await am.change(modif.old.doc, modif.new)
-    console.log("newdoc", newDoc)
-
+    let node = await am.change(modif.old, modif.new)
+    console.log("node", node)
+    await idb.saveItem(node);
+    await idb.deleteItem(modif.old);
 
   },
   // async saveItem1(context, item) {

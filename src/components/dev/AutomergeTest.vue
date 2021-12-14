@@ -74,6 +74,7 @@ export default {
       console.log(this.editing, this.item)
       await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
       this.init()
+      this.$store.commit('local/editing', null)
     },
     cancel(){
       console.log("cancel")

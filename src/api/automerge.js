@@ -16,9 +16,9 @@ export default {
 	},
 
 	async change(old, patch){
-		let oldid = await Automerge.getActorId(old)
-		console.log(oldid, old)
-			let newDoc = await Automerge.change(old, doc => {
+		// let oldid = await Automerge.getActorId(old)
+		console.log( old)
+			let newDoc = await Automerge.change(old.doc, doc => {
 				doc = Object.assign(doc, patch);
 				console.log(doc)
 				//  doc.property = patch
