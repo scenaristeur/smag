@@ -4,16 +4,17 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <AutomergeTest />
     </div>
 
 
     <!-- <Hello /> -->
     <router-view/>
     <hr>
-<Checklist />
+    <Checklist />
     <Login />
-        <Browser />
-    <NewNote />
+    <!-- <Browser /> -->
+    <!-- <NewNote /> -->
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
@@ -38,10 +39,12 @@ export default {
     // Hello,
     // Browser: () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.ae504fb4d5080011b75e.umd.min.js'),
     // Browser: () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.umd.min.js'),
-    'Browser': () => import('@/components/browser/Browser'),
-    'NewNote': () => import('@/views/sharing/NewNote'),
+    // 'Browser': () => import('@/components/browser/Browser'),
+    // 'NewNote': () => import('@/views/sharing/NewNote'),
     'NewItem': () => import('@/components/items/NewItem'),
     'Checklist': () => import('@/components/dev/Checklist'),
+    'AutomergeTest': () => import('@/components/dev/AutomergeTest'),
+
     // 'Sma': () => import('@/views/Sma'),
     // 'Workspaces': () => import('@/views/Workspaces'),
     // 'Synchro': () => import('@/components/Synchro'),

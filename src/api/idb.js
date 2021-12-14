@@ -5,7 +5,7 @@ let DB;
 
 export default {
 
-	async getDb(item) {
+	async getDb() {
 		return new Promise((resolve, reject) => {
 
 			if(DB) { return resolve(DB); }
@@ -25,32 +25,32 @@ export default {
 			request.onupgradeneeded = e => {
 				console.log('onupgradeneeded');
 				let db = e.target.result;
-				db.createObjectStore(item.type, { keyPath:'id' });
+				db.createObjectStore('node', { keyPath:'id' });
 			};
 		});
 	},
 	async deleteItem(item) {
 
-		let db = await this.getDb(item);
+		let db = await this.getDb();
 
 		return new Promise(resolve => {
 
-			let trans = db.transaction([item.type],'readwrite');
+			let trans = db.transaction(['node'],'readwrite');
 			trans.oncomplete = () => {
 				resolve();
 			};
 
-			let store = trans.objectStore(item.type);
+			let store = trans.objectStore('node');
 			store.delete(item.id);
 		});
 	},
-	async clearStore(item){
+	async clearStore(){
 		console.log("clear store")
 		try{
-			let db = await this.getDb(item);
-			var transaction = db.transaction([item.type], "readwrite");
+			let db = await this.getDb();
+			var transaction = db.transaction(['node'], "readwrite");
 			// create an object store on the transaction
-			var objectStore = transaction.objectStore(item.type);
+			var objectStore = transaction.objectStore('node');
 
 			// Make a request to clear all the data out of the object store
 			var objectStoreRequest = objectStore.clear();
@@ -64,20 +64,20 @@ export default {
 		}catch(e){
 			alert(e)
 		}
-		await this.getItems(item)
+		await this.getItems()
 	},
-	async getItems(item) {
+	async getItems() {
 
-		let db = await this.getDb(item);
+		let db = await this.getDb();
 
 		return new Promise(resolve => {
 
-			let trans = db.transaction([item.type],'readonly');
+			let trans = db.transaction(['node'],'readonly');
 			trans.oncomplete = () => {
 				resolve(items);
 			};
 
-			let store = trans.objectStore(item.type);
+			let store = trans.objectStore('node');
 			let items = [];
 
 			store.openCursor().onsuccess = e => {
@@ -93,16 +93,16 @@ export default {
 
 	async saveItem(item) {
 
-		let db = await this.getDb(item);
+		let db = await this.getDb();
 
 		return new Promise(resolve => {
 
-			let trans = db.transaction([item.type],'readwrite');
+			let trans = db.transaction(['node'],'readwrite');
 			trans.oncomplete = () => {
 				resolve();
 			};
 
-			let store = trans.objectStore(item.type);
+			let store = trans.objectStore('node');
 			store.put(item);
 
 		});

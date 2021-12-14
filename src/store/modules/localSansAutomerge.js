@@ -1,6 +1,5 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import idb from '@/api/idb';
-import am from '@/api/automerge';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -37,33 +36,17 @@ const actions = {
       //   }
       // }
       // if (exclude != "local"){
-      console.log('store is being asked to delete '+item.id, item['ve:name']);
-      await idb.deleteItem(item);
+        console.log('store is being asked to delete '+item.id, item['ve:name']);
+        await idb.deleteItem(item);
       // }
     }
   },
-  async getItems(context) {
+  async getItems(context, item) {
     context.state.items = [];
-    let items = await idb.getItems();
-    items.forEach(async function(i) {
-
-       i.doc = await am.load(i)
-      // if(i.doc != undefined ){
-      //   let doc = await Vue.prototype.$loadAMWithId(i)
-      //   console.log("doc", doc)
-      //   i = doc
-      // }
-      // console.log(i)
-      console.log(i)
+    let items = await idb.getItems(item);
+    items.forEach(i => {
       context.state.items.push(i);
     });
-  },
-  async createItem(context, item){
-    item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
-    item['ve:updated'] = Date.now()
-    let node = await am.create(item)
-    console.log("node", node)
-    await idb.saveItem(node);
   },
   async saveItem(context, item) {
     //let exclude = node.exclude
@@ -72,26 +55,23 @@ const actions = {
     item.id == undefined ? item.id = uuidv4() : ""
     item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
     item['ve:updated'] = Date.now()
-    ///////////////////////////////
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ///if ( doc existe le recuperer, sinon le créer), géré le id en automerge ?
-    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // si existe, le modifier avec chanegAM
-    let exist = false
-    let newDoc = null
-    if(exist != true){
-      newDoc = await Vue.prototype.$createAM(item)
-    }else{
-      //  newDoc = await this.$changeAM(exist, {yipy: "pop", date: Date.now()})
-      newDoc = await Vue.prototype.$changeAM(exist, item)
-    }
-    console.log("newDoc", newDoc)
-    let docToSave = await Vue.prototype.$saveAM(newDoc)
-
-    docToSave.type = "tension"
-    console.log('store is being asked to save '+JSON.stringify(docToSave));
-    await idb.saveItem(docToSave);
+    // if( exclude != "remote"){
+    //   if(context.rootState.solid.pod != null){
+    //     try{
+    //       node = await Vue.prototype.$createRemote(node)
+    //     }
+    //     catch(e){
+    //       console.log(e)
+    //     }
+    //   }
+    //   else{
+    //     console.log("is not connected")
+    //   }
+    // }
+    // if (exclude != "local"){
+      console.log('store is being asked to save '+JSON.stringify(item));
+      await idb.saveItem(item);
+    // }
 
   },
   async clearStore(){

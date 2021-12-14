@@ -2,7 +2,8 @@
   <b-container class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Tension />
+    <!-- <Tension /> -->
+    <!-- <Nodes /> -->
   </b-container>
 </template>
 
@@ -13,7 +14,9 @@
 export default {
   name: 'Home',
   components: {
-    'Tension': () => import('@/views/tension/Tension'),
+    // 'Nodes': () => import('@/views/nodes/Nodes'),
+
+    // 'Tension': () => import('@/views/tension/Tension'),
   },
 }
 </script>

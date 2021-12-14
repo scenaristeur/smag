@@ -147,39 +147,16 @@ export default {
       // privacy: "private"
     }
   },
-  created(){
-
-
-    //this.schema = Object.assign({}, schema.default)
-    this.tension = new Tension()
-    // console.log(this.tension)
-  },
+  // created(){
+  //   this.tension = new Tension()
+  // },
   methods:{
-    // handleOk(){
-    //   console.log(this.item)
-    //   this.save()
-    //   // this.item = {}
-    // },
     async handleOk() {
       console.log("save", this.item)
       this.currentProp = {}
       await this.$store.dispatch('local/saveItem', this.item)
       await this.$store.dispatch('local/getItems', this.item)
-      this.tension.save(this.item)
       this.$store.commit('app/setCurrentItem', null)
-      //  this.tension = null
-      //this.tension = null
-      //  Object.assign(this.item, {})
-      // this.tension1.test_change = "BIP"
-      //this.item = null
-
-      //  this.item = Object.assign({}, schema.default)
-
-      //  console.log("schema",this.schema)
-
-      // await this.$store.dispatch('nodes/saveNode', this.node);
-      // this.$store.commit('nodes/setCurrentNode', null)
-      // this.$router.push('/');
     },
     add(){
       this.field = {name: ""}
@@ -206,60 +183,27 @@ export default {
     },
     addNewValue(){
       let val = {value: this.newvalue,  type: this.fieldType}
-      //  console.log(val, this.schema)
       this.currentProp.values.push(val)
       this.newvalue = null
     },
     addNewLink(){
-      //console.log(this.link)
       let val = {value: this.link,  type: this.fieldType}
       this.currentProp.values.push(val)
       this.link = {}
     },
-
   },
   watch:{
     currentItem(){
-      //  console.log("schema", schema)
-      console.log(this.currentItem)
       if (this.currentItem != null){
         if (Object.entries(this.currentItem).length === 0){
           this.currentProp = {}
           this.tension = new Tension({name: "New Tension"})
-          // console.log("schema", this.schema)
-          //this.tension.init()
-          console.log(this.tension)
-          //this.item = this.tension.data
           this.item =  Object.assign({}, this.tension.data)
-          console.log("assign", this.item)
         }else{
           this.item = this.currentItem
         }
-        console.log(this.item)
-        // console.log("schema", this.schema)
-        //  Object.assign(this.currentProp,{})
-        // if (Object.entries(this.item).length === 0){
-        //   this.tension = new Tension({name: "New Tension"})
-        //   console.log(this.tension)
-        //   Object.assign(this.item,this.tension.data)
-        //   console.log(this.item)
-        // }
-
-        // this.item['ve:age'] == undefined ? this.item['ve:age'] = -6 : ""
-        //
-        // this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
-
         this.$bvModal.show("newItemModal")
       }
-
-      // if (this.currentItem != null){
-      //   this.tension = new Tension({name: "New Tension"})
-      //   console.log(this.tension)
-      //   this.item = this.currentItem
-      //   this.$bvModal.show("newItemModal")
-      // }else{
-      //   this.item == {}
-      // }
     }
   },
   computed:{
