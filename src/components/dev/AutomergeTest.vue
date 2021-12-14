@@ -17,16 +17,38 @@
         required type="number"  />
       </b-col>
     </b-row>
+
+    <b-row>
+    props  {{item['ve:properties']}}
+    </b-row>
+
+
     <b-button @click="create" variant="info" v-if="editing == null">Create</b-button>
+    <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
+      text="Add Properties" class="m-2" variant="outline-dark">
+      <!-- id="dropdown-offset" offset="25"  -->
+      <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
+      <b-dropdown-item v-for="(modele, name) in modeles" :key="modele.id"
+      @click="addModele(modele)">{{name}}</b-dropdown-item>
+      <!-- <b-dropdown-item href="#">une personn else here</b-dropdown-item> -->
+    </b-dropdown>
+    <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
     <b-button v-if="editing != null" @click="update" variant="info">Update</b-button>
     <b-button v-if="editing != null" @click="cancel" variant="light">Cancel</b-button>
     <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
+
+    {{ modeles}}
+
     <Nodes />
 
   </div>
 </template>
 
 <script>
+
+import * as TensionTest from '@/agents/models/tension'
+import * as Tension from '@/agents/models/tension'
+
 export default {
   name: "AutomergeTest",
   components: {
@@ -34,12 +56,17 @@ export default {
   },
   data(){
     return {
-      modele : {},
-      item: {}
+      default : {},
+      item: {},
+      modeles : {}
     }
   },
   created(){
     this.init()
+    this.modeles.tension = new Tension({name: "New Tension"})
+    this.modeles.person = new TensionTest({name: "Old Tension Tes"})
+    this.modeles.group = new TensionTest({name: "the Group"})
+    this.modeles.Action = new TensionTest({name: "OAn action"})
   },
   mounted(){
     this.$refs.name.focus()
@@ -48,7 +75,6 @@ export default {
     async create(){
       await this.$store.dispatch('local/create', this.item)
       this.init()
-
     },
     async readAll(){
       await this.$store.dispatch('local/getItems')
@@ -65,9 +91,14 @@ export default {
       this.init()
     },
     init(){
-      this.item  = Object.assign({}, this.modele)
+      this.item  = Object.assign({}, this.default)
       this.$store.dispatch('local/getItems')
       this.$store.commit('local/editing', null)
+    },
+    addModele(modele){
+      console.log(modele)
+      this.item  = Object.assign(this.item, modele.data)
+      console.log(this.item)
     }
   },
   watch:{
@@ -75,7 +106,7 @@ export default {
       if(this.editing != null){
         this.item = Object.assign({}, this.editing.doc)
       }else{
-        this.item = Object.assign({}, this.modele)
+        this.item = Object.assign({}, this.default)
       }
       this.$refs.name.focus()
     }

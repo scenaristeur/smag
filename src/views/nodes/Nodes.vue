@@ -1,7 +1,5 @@
 <template>
   <div>
-
-    <br>
     <b-row v-if="items.length > 0">
       <b-col cols="12" md="4">
         <b-input-group class="mb-3">
@@ -23,7 +21,7 @@
       <b-list-group-item
       v-for="i in orderedItems" :key="i.id" button
       @click="edit(i)">
-      <h3>{{ i.doc['ve:name']}}</h3>
+      <b>{{i.doc['ve:name']}}</b>
       <small>{{i.doc['ve:age']}}</small>
       {{ i.doc}}
     </b-list-group-item>
