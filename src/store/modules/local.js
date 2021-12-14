@@ -1,11 +1,12 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import idb from '@/api/idb';
 import am from '@/api/automerge';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 
 const state = () => ({
   items:[],
+  editing: null
   // remoteNodes : [],
   // currentNode: null,
   // notBoth : [],
@@ -47,7 +48,7 @@ const actions = {
     let items = await idb.getItems();
     items.forEach(async function(i) {
 
-       i.doc = await am.load(i)
+      i.doc = await am.load(i)
       // if(i.doc != undefined ){
       //   let doc = await Vue.prototype.$loadAMWithId(i)
       //   console.log("doc", doc)
@@ -58,42 +59,51 @@ const actions = {
       context.state.items.push(i);
     });
   },
-  async createItem(context, item){
+  async create(context, item){
     item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
     item['ve:updated'] = Date.now()
     let node = await am.create(item)
     console.log("node", node)
     await idb.saveItem(node);
   },
-  async saveItem(context, item) {
-    //let exclude = node.exclude
-    //delete node.exclude
-    //console.log(exclude)
-    item.id == undefined ? item.id = uuidv4() : ""
-    item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
-    item['ve:updated'] = Date.now()
-    ///////////////////////////////
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ///if ( doc existe le recuperer, sinon le créer), géré le id en automerge ?
-    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // si existe, le modifier avec chanegAM
-    let exist = false
-    let newDoc = null
-    if(exist != true){
-      newDoc = await Vue.prototype.$createAM(item)
-    }else{
-      //  newDoc = await this.$changeAM(exist, {yipy: "pop", date: Date.now()})
-      newDoc = await Vue.prototype.$changeAM(exist, item)
-    }
-    console.log("newDoc", newDoc)
-    let docToSave = await Vue.prototype.$saveAM(newDoc)
 
-    docToSave.type = "tension"
-    console.log('store is being asked to save '+JSON.stringify(docToSave));
-    await idb.saveItem(docToSave);
+  async update(context, modif){
+    console.log("modif", modif.old, modif.new)
+    modif.new['ve:updated'] = Date.now()
+    let newDoc = await am.change(modif.old.doc, modif.new)
+    console.log("newdoc", newDoc)
+
 
   },
+  // async saveItem1(context, item) {
+  //   //let exclude = node.exclude
+  //   //delete node.exclude
+  //   //console.log(exclude)
+  //   item.id == undefined ? item.id = uuidv4() : ""
+  //   item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
+  //   item['ve:updated'] = Date.now()
+  //   ///////////////////////////////
+  //   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //   ///if ( doc existe le recuperer, sinon le créer), géré le id en automerge ?
+  //   ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //   // si existe, le modifier avec chanegAM
+  //   let exist = false
+  //   let newDoc = null
+  //   if(exist != true){
+  //     newDoc = await Vue.prototype.$createAM(item)
+  //   }else{
+  //     //  newDoc = await this.$changeAM(exist, {yipy: "pop", date: Date.now()})
+  //     newDoc = await Vue.prototype.$changeAM(exist, item)
+  //   }
+  //   console.log("newDoc", newDoc)
+  //   let docToSave = await Vue.prototype.$saveAM(newDoc)
+  //
+  //   docToSave.type = "tension"
+  //   console.log('store is being asked to save '+JSON.stringify(docToSave));
+  //   await idb.saveItem(docToSave);
+  //
+  // },
   async clearStore(){
     let del =  confirm("Do you want to KEEP all nodes stored on this device ?");
     if (del == false){
@@ -129,10 +139,10 @@ const actions = {
 }
 
 const mutations = {
-  // setRemotes (state, r){
-  //   console.log("remotes", r)
-  //   state.remoteNodes = r
-  // },
+  editing (state, item){
+    console.log("editing", item)
+    state.editing = item
+  },
   // setCurrentNode (state, n){
   //   state.currentNode = n
   // },

@@ -10,9 +10,26 @@ export default {
 		return {id: id , uint8: uint8 }
 		// return {id: id, doc: doc}
 	},
+
 	async load(node){
 		return await Automerge.load(node.uint8)
-	}
+	},
+
+	async change(old, patch){
+		let oldid = await Automerge.getActorId(old)
+		console.log(oldid, old)
+			let newDoc = await Automerge.change(old, doc => {
+				doc = Object.assign(doc, patch);
+				console.log(doc)
+				//  doc.property = patch
+			})
+			console.log(newDoc)
+			let id = await Automerge.getActorId(newDoc)
+			let uint8 = await Automerge.save(newDoc)
+			console.log(id)
+			return {id: id , uint8: uint8 }
+		}
+
 	// async getDb(item) {
 	// 	return new Promise((resolve, reject) => {
 	//
