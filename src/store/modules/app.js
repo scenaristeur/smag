@@ -1,7 +1,8 @@
 // import Vue from 'vue'
 const state = () => ({
-  currentItem : null,
-  search: ''
+  item : {},
+  search: '',
+  currentProp: {}
   // files: [],
   // folders: [],
   // mustExplore: null,
@@ -31,12 +32,17 @@ const mutations = {
   // mustExplore(state, u){
   //   state.mustExplore = u
   // }
-  setCurrentItem(state,i){
-    state.currentItem = i
+  updateItem(state,i){
+    state.item = i
   },
-  // setContent(state,c){
-  //   state.content = c
-  // },
+  setCurrentProp(state,p){
+    state.currentProp = p
+  },
+  addProp(state, p){
+    console.log(state.item, p)
+    state.item['ve:properties'] == undefined ? state.item['ve:properties'] = [] : ""
+    state.item['ve:properties'] = Object.assign(state.item['ve:properties'], p)
+  }
 
 }
 

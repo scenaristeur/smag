@@ -1,9 +1,9 @@
 <template>
   <b-container>
 
-    <NodeEditor v-if="this.editing != null" :item="item" />
+    <NodeEditor v-if="this.editing != null" />
 
-
+    ITEM : {{ item }}
     <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
     <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
       text="Add Properties" class="m-2" variant="outline-dark">
@@ -41,8 +41,8 @@ export default {
   },
   data(){
     return {
-      default : {'ve:age': 0},
-      item: {},
+      default : {'ve:name': '','ve:age': 0, 've:properties': []},
+      //  item: {},
       modeles : {}
     }
   },
@@ -100,16 +100,25 @@ export default {
   },
   watch:{
     editing(){
+
       if(this.editing != null){
         this.item = Object.assign({}, this.editing.doc)
       }else{
         this.item = Object.assign({}, this.default)
       }
+      this.$store.commit('app/updateItem', this.item)
+    },
+    item(){
+      this.$store.commit('app/updateItem', this.item)
     }
   },
   computed:{
     editing:{
       get() { return this.$store.state.local.editing},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    item:{
+      get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }

@@ -37,9 +37,10 @@ methods:{
   }
 },
 computed:{
-  currentItem() {
-    return this.$store.state.app.currentItem
-  }
+  item:{
+    get() { return this.$store.state.app.item},
+    set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+  },
 }
 }
 </script>

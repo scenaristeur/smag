@@ -1,5 +1,6 @@
 <template>
   <div>
+    item in editor : {{item}}
     <b-row>
       <b-col sm="3">
         <label for="name"><code>Name</code>:</label>
@@ -19,16 +20,19 @@
     </b-row>
 
     <b-row>
-      props  {{item['ve:properties']}}
-      <NodeProperties :item="item" />
+
+      <NodeProperties />
     </b-row>
+
+    props:  {{item['ve:properties']}}
+    <hr>
+    item : {{item}}
   </div>
 </template>
 
 <script>
 export default {
   name: "NodeEditor",
-  props: ['item'],
   components: {
     'NodeProperties': () => import('@/views/nodes/NodeProperties'),
   },
@@ -36,13 +40,13 @@ export default {
     this.$refs.name.focus()
   },
   watch:{
-    editing(){
+    item(){
       this.$refs.name.focus()
     }
   },
   computed:{
-    editing:{
-      get() { return this.$store.state.local.editing},
+    item:{
+      get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }

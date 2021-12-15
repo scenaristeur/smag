@@ -1,10 +1,11 @@
 <template>
   <div>
-    <b-row v-for="p in item['ve:properties']" :key="p.name">
-      <b-col sm="3">
+    properties in nodeproperties: {{properties}}
+    <b-row v-for="p in properties" :key="p.name">
+      <b-col sm="5">
         <label for="name"><code>{{p.label || p.name}}</code>:</label>
       </b-col>
-      <b-col sm="9">
+      <b-col sm="7">
 
         <b-button @click="showFieldModal(p)" variant="outline-primary">+</b-button>
         <!-- {{ p.values}} -->
@@ -25,31 +26,31 @@
 
     <b-row v-else>
 
-        <b-btn variant="outline-primary" size="sm" @click="add">+ add a property or a link</b-btn>
+      <b-btn variant="outline-primary" size="sm" @click="add">+ add a property or a link</b-btn>
 
     </b-row>
 
-    <FieldModal :item="item" :currentProp="currentProp" />
+    <FieldModal />
+    {{properties}}
   </div>
 </template>
 
 <script>
 export default {
   name: 'NodeProperties',
-  props: ['item'],
   components: {
-    // 'NewItemButton': () => import('@/components/items/NewItemButton'),
-    // 'ItemSelector': () => import('@/components/items/ItemSelector'),
     'Values': () => import('@/components/items/Values'),
     'FieldModal': () => import('@/components/items/FieldModal'),
   },
   data(){
     return{
       field : null,
-      currentProp: {},
       clearing: false,
     }
   },
+  // created(){
+  //   this.properties == undefined ? this.properties = [] : ""
+  // },
   methods:{
     add(){
       this.field = {name: ""}
@@ -58,11 +59,10 @@ export default {
       console.log(field_name)
       if(this.clearing == false && field_name.length > 0){
         let p = {name: field_name, values: []}
-        this.item['ve:properties'] == undefined ? this.item['ve:properties'] = [] : ""
-        var index = this.item['ve:properties'].findIndex(x => x.name==p.name);
-        index === -1 ? this.item['ve:properties'].push(p) : alert(p.name+" already exist")
+
+        var index = this.properties.findIndex(x => x.name==p.name);
+        index === -1 ? this.properties.push(p) : alert(p.name+" already exist")
         this.field = {}
-        console.log(p, this.item)
       }
     },
     clear_field(){
@@ -72,8 +72,14 @@ export default {
     },
     showFieldModal(p){
       console.log(p)
-      this.currentProp = p
       this.$bvModal.show("fieldModal")
+      this.$store.commit('app/setCurrentProp', p)
+    },
+  },
+  computed:{
+    properties:{
+      get() { return this.$store.state.app.item['ve:properties'] || []},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }
 }
