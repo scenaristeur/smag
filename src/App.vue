@@ -18,7 +18,7 @@
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
-    <small><i>0.0.2 - lines </i></small>
+    <small><i>0.0.2 - add props </i></small>
   </div>
 </template>
 

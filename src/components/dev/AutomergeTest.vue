@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col sm="3">
-        <label for="name">Name:</label>
+        <label for="name"><code>Name</code>:</label>
       </b-col>
       <b-col sm="9">
         <b-form-input id="name" ref="name" v-model="item['ve:name']" autocomplete="off" autofocus />
@@ -19,7 +19,7 @@
     </b-row>
 
     <b-row>
-    props  {{item['ve:properties']}}
+      props  {{item['ve:properties']}}
     </b-row>
 
 
@@ -27,14 +27,15 @@
     <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
       text="Add Properties" class="m-2" variant="outline-dark">
       <!-- id="dropdown-offset" offset="25"  -->
-      <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
+
       <b-dropdown-item v-for="(modele, name) in modeles" :key="modele.id"
       @click="addModele(modele)">{{name}}</b-dropdown-item>
+        <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
       <!-- <b-dropdown-item href="#">une personn else here</b-dropdown-item> -->
     </b-dropdown>
     <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
     <b-button v-if="editing != null" @click="update" variant="info">Update</b-button>
-    <b-button v-if="editing != null" @click="cancel" variant="light">Cancel</b-button>
+    <b-button v-if="editing != null || (item['ve:name'] != undefined && item['ve:name'])" @click="cancel" variant="light">Cancel</b-button>
     <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
 
     <!-- {{ modeles}} -->
@@ -46,8 +47,9 @@
 
 <script>
 
-import * as TensionTest from '@/agents/models/tension'
+// import * as TensionTest from '@/agents/models/tension'
 import * as Tension from '@/agents/models/tension'
+import * as Person from '@/agents/models/person'
 
 export default {
   name: "AutomergeTest",
@@ -56,7 +58,7 @@ export default {
   },
   data(){
     return {
-      default : {},
+      default : {'ve:age': 0},
       item: {},
       modeles : {}
     }
@@ -64,24 +66,34 @@ export default {
   created(){
     this.init()
     this.modeles.tension = new Tension({name: "New Tension"})
-    this.modeles.person = new TensionTest({name: "Old Tension Tes"})
-    this.modeles.group = new TensionTest({name: "the Group"})
-    this.modeles.Action = new TensionTest({name: "OAn action"})
+    this.modeles.person = new Person({name: "Person"})
+    // this.modeles.group = new TensionTest({name: "the Group"})
+    // this.modeles.Action = new TensionTest({name: "OAn action"})
+    // this.modeles.Project = new TensionTest({name: "OProject"})
+    // this.modeles.Task = new TensionTest({name: "OAn Task"})
   },
   mounted(){
     this.$refs.name.focus()
   },
   methods:{
     async create(){
+      if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
       await this.$store.dispatch('local/create', this.item)
       this.init()
+    }else{
+    this.emptyMessage("name")
+    }
     },
     async readAll(){
       await this.$store.dispatch('local/getItems')
     },
     async update(){
+        if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
       await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
       this.init()
+    }else{
+      this.emptyMessage("name")
+    }
     },
     cancel(){
       this.init()
@@ -97,8 +109,11 @@ export default {
     },
     addModele(modele){
       console.log(modele)
-      this.item  = Object.assign(this.item, modele.data)
+      this.item  = Object.assign({},this.item, modele.data)
       console.log(this.item)
+    },
+    emptyMessage(key){
+        alert('You should give it a '+key+' !')
     }
   },
   watch:{
