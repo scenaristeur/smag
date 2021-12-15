@@ -20,7 +20,7 @@
       <li>[ X ] Storing it local first in indexedb</li>
       <li>[ ] Personal pod synchronisation</li>
       <li>[ ] Collectif pod collaboration / share & retrieve</li>
-      <li>[ ] use the serach field for 'search or create'</li>
+      <li>[ X ] use the serach field for 'search or create'</li>
       <li></li>
     </ol>
   </div>

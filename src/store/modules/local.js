@@ -28,8 +28,11 @@ const actions = {
     item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
     item['ve:updated'] = Date.now()
     let node = await am.create(item)
-    // console.log("node", node)
+    console.log("node", node)
     await idb.saveItem(node);
+    node.doc = await am.load(node)
+    console.log(node)
+    context.state.editing = node
   },
 
   async update(context, modif){

@@ -6,7 +6,8 @@
       <router-link to="/about">About</router-link>
 
     </div> -->
-
+    <SearchOrCreate />
+<hr>
     <AutomergeTest />
     <!-- <Hello /> -->
     <router-view/>
@@ -18,7 +19,7 @@
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
-    <small><i>0.0.2 - add props </i></small>
+    <small><i>0.0.2 - SearchOrCreate </i></small>
   </div>
 </template>
 
@@ -44,6 +45,7 @@ export default {
     'NewItem': () => import('@/components/items/NewItem'),
     'Checklist': () => import('@/components/dev/Checklist'),
     'AutomergeTest': () => import('@/components/dev/AutomergeTest'),
+    'SearchOrCreate': () => import('@/views/SearchOrCreate'),
 
     // 'Sma': () => import('@/views/Sma'),
     // 'Workspaces': () => import('@/views/Workspaces'),

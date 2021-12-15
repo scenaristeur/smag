@@ -1,6 +1,7 @@
 // import Vue from 'vue'
 const state = () => ({
-  currentItem : null
+  currentItem : null,
+  search: ''
   // files: [],
   // folders: [],
   // mustExplore: null,
@@ -21,9 +22,9 @@ const actions = {
 
 const mutations = {
 
-  // addFile(state,f){
-  //   state.files.push(f)
-  // },
+  setSearch(state,s){
+    state.search = s
+  },
   // addFolder(state,f){
   //   state.folders.push(f)
   // },

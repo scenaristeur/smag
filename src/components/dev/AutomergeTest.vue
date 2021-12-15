@@ -1,10 +1,10 @@
 <template>
   <b-container>
 
-    <NodeEditor :item="item" />
+    <NodeEditor v-if="this.editing != null" :item="item" />
 
 
-    <b-button @click="create" variant="info" v-if="editing == null">Create</b-button>
+    <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
     <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
       text="Add Properties" class="m-2" variant="outline-dark">
       <!-- id="dropdown-offset" offset="25"  -->
@@ -58,14 +58,14 @@ export default {
   },
 
   methods:{
-    async create(){
-      if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
-        await this.$store.dispatch('local/create', this.item)
-        this.init()
-      }else{
-        this.emptyMessage("name")
-      }
-    },
+    // async create(){
+    //   if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
+    //     await this.$store.dispatch('local/create', this.item)
+    //     this.init()
+    //   }else{
+    //     this.emptyMessage("name")
+    //   }
+    // },
     async readAll(){
       await this.$store.dispatch('local/getItems')
     },
