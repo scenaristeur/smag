@@ -20,6 +20,7 @@
 
     <b-row>
       props  {{item['ve:properties']}}
+      <NodeProperties :item="item" />
     </b-row>
   </div>
 </template>
@@ -28,6 +29,9 @@
 export default {
   name: "NodeEditor",
   props: ['item'],
+  components: {
+    'NodeProperties': () => import('@/views/nodes/NodeProperties'),
+  },
   mounted(){
     this.$refs.name.focus()
   },
