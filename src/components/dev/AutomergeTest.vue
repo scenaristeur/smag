@@ -30,7 +30,7 @@
 
       <b-dropdown-item v-for="(modele, name) in modeles" :key="modele.id"
       @click="addModele(modele)">{{name}}</b-dropdown-item>
-        <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
+      <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
       <!-- <b-dropdown-item href="#">une personn else here</b-dropdown-item> -->
     </b-dropdown>
     <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
@@ -50,6 +50,7 @@
 // import * as TensionTest from '@/agents/models/tension'
 import * as Tension from '@/agents/models/tension'
 import * as Person from '@/agents/models/person'
+import * as Note from '@/agents/models/note'
 
 export default {
   name: "AutomergeTest",
@@ -67,6 +68,7 @@ export default {
     this.init()
     this.modeles.tension = new Tension({name: "New Tension"})
     this.modeles.person = new Person({name: "Person"})
+    this.modeles.note = new Note({name: "Nothing to do with that yet ;-)"})
     // this.modeles.group = new TensionTest({name: "the Group"})
     // this.modeles.Action = new TensionTest({name: "OAn action"})
     // this.modeles.Project = new TensionTest({name: "OProject"})
@@ -78,22 +80,22 @@ export default {
   methods:{
     async create(){
       if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
-      await this.$store.dispatch('local/create', this.item)
-      this.init()
-    }else{
-    this.emptyMessage("name")
-    }
+        await this.$store.dispatch('local/create', this.item)
+        this.init()
+      }else{
+        this.emptyMessage("name")
+      }
     },
     async readAll(){
       await this.$store.dispatch('local/getItems')
     },
     async update(){
-        if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
-      await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
-      this.init()
-    }else{
-      this.emptyMessage("name")
-    }
+      if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
+        await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
+        this.init()
+      }else{
+        this.emptyMessage("name")
+      }
     },
     cancel(){
       this.init()
@@ -113,7 +115,7 @@ export default {
       console.log(this.item)
     },
     emptyMessage(key){
-        alert('You should give it a '+key+' !')
+      alert('You should give it a '+key+' !')
     }
   },
   watch:{
