@@ -3,14 +3,14 @@
     <b-row v-if="items.length > 0">
       <b-col cols="12" md="4">
         <b-input-group class="mb-3">
-          <b-form-input v-model="search" placeholder="search"></b-form-input>
+          <b-form-input v-model="search" placeholder="search or create"></b-form-input>
           <b-input-group-append>
             <!-- <b-button variant="outline-success">Button</b-button> -->
             <b-button v-if="search.length > 0" variant="outline-secondary" @click="search=''">X</b-button>
           </b-input-group-append>
         </b-input-group>
       </b-col>
-      <b-col cols="12" md="4">
+      <b-col cols="12" md="4" v-if="items.length > 0">
         <!-- <b-button variant="outline-primary" @click="addNode">Add</b-button> -->
         <b-button size="sm" variant="outline-info" @click="order == 'asc' ? order= 'desc' : order = 'asc'">{{order}}</b-button>
         {{items.length}} nodes

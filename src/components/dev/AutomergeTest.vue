@@ -1,26 +1,7 @@
 <template>
-  <div>
-    <b-row>
-      <b-col sm="3">
-        <label for="name"><code>Name</code>:</label>
-      </b-col>
-      <b-col sm="9">
-        <b-form-input id="name" ref="name" v-model="item['ve:name']" autocomplete="off" autofocus />
-      </b-col>
-      <b-col sm="3">
-        <label for="age"><code>Age</code>:</label>
-      </b-col>
-      <b-col>
-        <b-form-input
-        id="age"
-        v-model="item['ve:age']"
-        required type="number"  />
-      </b-col>
-    </b-row>
+  <b-container>
 
-    <b-row>
-      props  {{item['ve:properties']}}
-    </b-row>
+    <NodeEditor :item="item" />
 
 
     <b-button @click="create" variant="info" v-if="editing == null">Create</b-button>
@@ -42,7 +23,7 @@
 
     <Nodes />
 
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -56,6 +37,7 @@ export default {
   name: "AutomergeTest",
   components: {
     'Nodes': () => import('@/views/nodes/Nodes'),
+    'NodeEditor': () => import('@/views/nodes/NodeEditor'),
   },
   data(){
     return {
@@ -74,9 +56,7 @@ export default {
     // this.modeles.Project = new TensionTest({name: "OProject"})
     // this.modeles.Task = new TensionTest({name: "OAn Task"})
   },
-  mounted(){
-    this.$refs.name.focus()
-  },
+
   methods:{
     async create(){
       if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
@@ -125,7 +105,6 @@ export default {
       }else{
         this.item = Object.assign({}, this.default)
       }
-      this.$refs.name.focus()
     }
   },
   computed:{

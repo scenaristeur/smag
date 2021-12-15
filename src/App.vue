@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <Navbar />
+    <!-- <Navbar />
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-      <AutomergeTest />
-    </div>
 
+    </div> -->
 
+    <AutomergeTest />
     <!-- <Hello /> -->
     <router-view/>
     <hr>
@@ -34,7 +34,7 @@
 export default {
   name: "App",
   components: {
-    'Navbar': () => import('@/components/layout/Navbar'),
+    // 'Navbar': () => import('@/components/layout/Navbar'),
     'Login': () => import('@/components/solid/Login'),
     // Hello,
     // Browser: () => externalComponent('https://components.solidcommunity.net/public/browser/Browser.ae504fb4d5080011b75e.umd.min.js'),
