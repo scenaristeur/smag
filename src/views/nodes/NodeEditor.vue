@@ -1,12 +1,12 @@
 <template>
   <div>
-    item in editor : {{item}}
+        {{ choudbi}}
     <b-row>
       <b-col sm="3">
         <label for="name"><code>Name</code>:</label>
       </b-col>
       <b-col sm="9">
-        <b-form-input id="name" ref="name" v-model="item['ve:name']" autocomplete="off" autofocus />
+        <b-form-input id="name" ref="name" v-model="choudbi._data['ve:name']" autocomplete="off" autofocus />
       </b-col>
       <b-col sm="3">
         <label for="age"><code>Age</code>:</label>
@@ -14,19 +14,14 @@
       <b-col>
         <b-form-input
         id="age"
-        v-model="item['ve:age']"
+        v-model="choudbi._data['ve:age']"
         required type="number"  />
       </b-col>
     </b-row>
 
     <b-row>
-
       <NodeProperties />
     </b-row>
-
-    props:  {{item['ve:properties']}}
-    <hr>
-    <!-- editing in editor : {{editing}} -->
   </div>
 </template>
 
@@ -40,18 +35,14 @@ export default {
     this.$refs.name.focus()
   },
   watch:{
-    item(){
+    choudbi(){
       this.$refs.name.focus()
     }
   },
   computed:{
-    item:{
-      get() { return this.$store.state.app.item},
-      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
-    },
-    editing:{
-      get() { return this.$store.state.local.editing},
-      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    choudbi:{
+      get() { return this.$store.state.choudbi.choudbi},
+      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
     },
   }
 }

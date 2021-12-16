@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import solid from './modules/solid'
 import app from './modules/app'
 import local from './modules/local'
+import choudbi from './modules/choudbi'
 //import sma from './modules/sma'
 
 
@@ -16,6 +17,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    solid, app, local,// sma
+    solid, app, local, choudbi// sma
   }
 })

@@ -3,7 +3,8 @@ const state = () => ({
   item : {},
   properties: [],
   search: '',
-  currentProp: {}
+  currentProp: {},
+    editing: null
   // files: [],
   // folders: [],
   // mustExplore: null,
@@ -33,7 +34,9 @@ const actions = {
 }
 
 const mutations = {
-
+  editing (state, item){
+    state.editing = item
+  },
   setSearch(state,s){
     state.search = s
   },

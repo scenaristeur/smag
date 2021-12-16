@@ -13,9 +13,16 @@ export default {
 		return await Automerge.load(node.uint8)
 	},
 
-	async change(old, patch){
-			let newDoc = await Automerge.change(old.doc, doc => {
-				doc = Object.assign(doc, patch);
+	async change(item){
+		console.log(item)
+		let old = await Automerge.load(item.am.uint8)
+		console.log("old", old)
+		let newData = Object.assign({}, item)
+		delete newData.am
+		console.log("newData", newData)
+			let newDoc = await Automerge.change(old, doc => {
+				console.log(old)
+				doc = newData
 				console.log(doc)
 			})
 			let id = await Automerge.getActorId(newDoc)

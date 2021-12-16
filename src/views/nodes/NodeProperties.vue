@@ -1,7 +1,7 @@
 <template>
   <div>
-    properties in nodeproperties: {{properties}}<br>
-    item in nodeproperties: {{item}}
+    <!-- properties in nodeproperties: {{properties}}<br>
+    item in nodeproperties: {{item}} -->
     <b-row v-for="p in properties" :key="p.name">
       <b-col sm="5">
         <label for="name"><code>{{p.label || p.name}}</code>:</label>
@@ -60,6 +60,8 @@ export default {
       if(this.clearing == false && field_name.length > 0){
         let p = {name: field_name, values: []}
         this.$store.commit('app/addProp', p)
+        this.choudbi.addProperty(field_name)
+        this.choudbi.debug()
         this.field = {}
       }
     },
@@ -86,12 +88,16 @@ export default {
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
     editing:{
-      get() { return this.$store.state.local.editing},
+      get() { return this.$store.state.app.editing},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
     item:{
       get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    choudbi:{
+      get() { return this.$store.state.choudbi.choudbi},
+      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
     },
   }
 }

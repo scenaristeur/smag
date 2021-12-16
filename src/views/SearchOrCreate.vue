@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import * as Choudbi from '@/agents/choudbi'
 export default {
   name: "SearchOrCreate",
   data(){
@@ -24,8 +25,12 @@ export default {
   },
   methods:{
     async create(){
-      let item = {'ve:name': this.words, 've:age': 0}
-      await this.$store.dispatch('local/create', item)
+      let choudbi = new Choudbi({debug: true})
+      console.log(choudbi)
+      let item = {'ve:name': this.words, 've:age': 0, 've:status': "creating"}
+      choudbi.update_data(item)
+      choudbi.debug()
+      await this.$store.dispatch('choudbi/update', choudbi)
       this.words = ''
     },
   },

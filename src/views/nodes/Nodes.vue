@@ -20,9 +20,9 @@
       <b-list-group-item
       v-for="i in orderedItems" :key="i.id" button
       @click="edit(i)">
-      <b>{{i.doc['ve:name']}}</b>
-      <small>{{i.doc['ve:age']}}</small>
-      {{ i.doc}}
+      <b>{{i['ve:name']}}</b>
+      <small>{{i['ve:age']}}</small>
+      {{ i['ve:properties']}}
     </b-list-group-item>
   </b-list-group>
   <!-- {{items}} -->
@@ -43,12 +43,12 @@ export default {
   methods:{
     edit(item){
       console.log(item)
-      this.$store.commit("local/editing", item)
+      this.$store.commit("app/editing", item)
     },
     byKey(key) {
       return function (o) {
-        var v = parseInt(o.doc[key], 10);
-        return isNaN(v) ? o.doc[key] : v;
+        var v = parseInt(o[key], 10);
+        return isNaN(v) ? o[key] : v;
       };
     }
   },
@@ -61,8 +61,8 @@ export default {
       return lodash.orderBy(this.filteredItems, this.byKey('ve:age'), this.order)
     },
     filteredItems: function (){
-      return this.search.length == 0 ? this.items : this.items.filter( n => {
-        return n.doc['ve:name'].toLowerCase().includes(this.search.toLowerCase())
+      return this.search.length == 0 ? this.items : this.items.filter( i => {
+        return i['ve:name'].toLowerCase().includes(this.search.toLowerCase())
       })
     },
     search:{

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/smag/precache-manifest.e21ae7ca2eb6c989d23bbd44a960c202.js"
+  "/smag/precache-manifest.b5c25098d740d27fb4a4f31026eb56b2.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "smag"});

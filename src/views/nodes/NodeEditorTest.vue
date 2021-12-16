@@ -194,7 +194,7 @@ export default {
   },
   computed:{
     editing:{
-      get() { return this.$store.state.local.editing},
+      get() { return this.$store.state.app.editing},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }

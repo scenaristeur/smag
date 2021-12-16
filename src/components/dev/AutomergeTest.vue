@@ -1,7 +1,7 @@
 <template>
   <b-container>
-
-    <NodeEditor v-if="this.editing != null" />
+    <!-- {{ choudbi}} -->
+    <NodeEditor v-if="this.choudbi != null" />
 
     <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
     <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
@@ -14,15 +14,15 @@
       <!-- <b-dropdown-item href="#">une personn else here</b-dropdown-item> -->
     </b-dropdown>
     <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
-    <b-button v-if="editing != null" @click="update" variant="info">Update</b-button>
-    <b-button v-if="editing != null || (item['ve:name'] != undefined && item['ve:name'])" @click="cancel" variant="light">Cancel</b-button>
-    <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
+    <b-button v-if="choudbi != null" @click="update" variant="info">Update</b-button>
+    <b-button v-if="choudbi != null || (item['ve:name'] != undefined && item['ve:name'])" @click="cancel" variant="light">Cancel</b-button>
+    <b-button v-if="choudbi != null" @click="remove" variant="warning">Remove</b-button>
 
     <!-- {{ modeles}} -->
 
     <Nodes />
-    [AM] Editing : {{ editing }}<br>
-    [AM] ITEM : {{ item }}
+    <!-- [AM] Editing : {{ editing }}<br>
+    [AM] ITEM : {{ item }} -->
 
   </b-container>
 </template>
@@ -71,9 +71,10 @@ export default {
       await this.$store.dispatch('local/getItems')
     },
     async update(){
+      this.choudbi.save()
       if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
-        console.log(this.editing, this.item)
-        await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
+        console.log(this.item)
+        await this.$store.dispatch('local/update', this.item)
         this.init()
       }else{
         this.emptyMessage("name")
@@ -89,7 +90,7 @@ export default {
     init(){
       this.item  = Object.assign({}, this.default)
       this.$store.dispatch('local/getItems')
-      this.$store.commit('local/editing', null)
+      this.$store.commit('app/editing', null)
     },
     addModele(modele){
       console.log(modele)
@@ -105,10 +106,12 @@ export default {
       console.log("editing", this.editing)
       if(this.editing != null){
         // this.item =  this.editing.doc
-        this.$store.commit('app/updateItem', this.editing.doc)
+        let item = Object.assign({}, this.editing)
+        this.$store.commit('app/updateItem', item)
       }else{
         // this.item = this.default
-        this.$store.commit('app/updateItem', this.default)
+        let item = Object.assign({}, this.default)
+        this.$store.commit('app/updateItem', item)
       }
       // console.log(this.item)
       // this.$store.commit('app/updateItem', this.item)
@@ -120,13 +123,18 @@ export default {
   },
   computed:{
     editing:{
-      get() { return this.$store.state.local.editing},
+      get() { return this.$store.state.app.editing},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
     item:{
       get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
+    choudbi:{
+      get() { return this.$store.state.choudbi.choudbi},
+      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
+    },
+
   }
 }
 </script>

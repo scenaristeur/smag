@@ -3,7 +3,7 @@ import am from '@/api/automerge';
 
 const state = () => ({
   items:[],
-  editing: null
+
 })
 
 const actions = {
@@ -13,34 +13,39 @@ const actions = {
     let node = await am.create(item)
     console.log("node", node)
     await idb.saveItem(node);
-    node.doc = await am.load(node)
-    console.log(node)
-    context.state.editing = node
+    // node.doc = await am.load(node)
+    // console.log(node)
+    item.actorId = node.id
+    context.commit('app/editing', item, { root: true })
   },
   async delete(context, item) {
-    let del =  confirm("Are you sur you want to delete "+item.doc['ve:name']);
+    console.log(item)
+    let del =  confirm("Are you sur you want to delete "+item['ve:name']);
     if (del == true){
-      console.log('store is being asked to delete '+item.id, item.doc['ve:name']);
-      await idb.deleteItem(item);
+      console.log('store is being asked to delete '+item.am.id, item['ve:name']);
+      await idb.deleteItem(item.am);
     }
   },
   async getItems(context) {
     let local_items = [];
     let items = await idb.getItems();
     items.forEach(async function(i) {
-      i.doc = await am.load(i)
-      local_items.push(i);
+      console.log(i)
+      let item = await am.load(i)
+      item.am = i
+      //i.doc = await am.load(i)
+      local_items.push(item);
     });
     console.log(local_items)
     context.state.items = local_items
   },
-  async update(context, modif){
-    // console.log("modif", modif.old, modif.new)
-    modif.new['ve:updated'] = Date.now()
-    let node = await am.change(modif.old, modif.new)
-    // console.log("node", node)
+  async update(context, item){
+    console.log("modif", item)
+    item['ve:updated'] = Date.now()
+    let node = await am.change(item)
+    console.log("node", node)
     await idb.saveItem(node);
-    await idb.deleteItem(modif.old);
+    await idb.deleteItem(item);
   },
   async clearStore(){
     let del =  confirm("Do you want to KEEP all nodes stored on this device ?");
@@ -51,9 +56,7 @@ const actions = {
 }
 
 const mutations = {
-  editing (state, item){
-    state.editing = item
-  },
+
 }
 
 export default {
