@@ -19,7 +19,7 @@
     <NewItem />
     {{session}}
     <!-- <Sma /> -->
-    <small><i>0.0.2 - SearchOrCreate -- choudbi</i></small>
+    <small><i>0.0.2 - SearchOrCreate -- choudbi </i></small>
   </div>
 </template>
 
