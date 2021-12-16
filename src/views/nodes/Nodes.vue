@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- items {{items}} -->
     <b-row v-if="items.length > 0">
       <!-- <b-col cols="12" md="4">
         <b-input-group class="mb-3">
@@ -20,9 +21,9 @@
       <b-list-group-item
       v-for="i in orderedItems" :key="i.id" button
       @click="edit(i)">
-      <b>{{i['ve:name']}}</b>
-      <small>{{i['ve:age']}}</small>
-      {{ i['ve:properties']}}
+      <b>{{i.doc['ve:name']}}</b>
+      <small>{{i.doc['ve:age']}}</small>
+      {{ i.doc['ve:properties']}}
     </b-list-group-item>
   </b-list-group>
   <!-- {{items}} -->
@@ -47,8 +48,8 @@ export default {
     },
     byKey(key) {
       return function (o) {
-        var v = parseInt(o[key], 10);
-        return isNaN(v) ? o[key] : v;
+        var v = parseInt(o.doc[key], 10);
+        return isNaN(v) ? o.doc[key] : v;
       };
     }
   },
@@ -62,7 +63,8 @@ export default {
     },
     filteredItems: function (){
       return this.search.length == 0 ? this.items : this.items.filter( i => {
-        return i['ve:name'].toLowerCase().includes(this.search.toLowerCase())
+        console.log()
+        return i.doc['ve:name'].toLowerCase().includes(this.search.toLowerCase())
       })
     },
     search:{

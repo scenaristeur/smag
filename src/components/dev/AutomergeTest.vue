@@ -113,15 +113,15 @@ export default {
   watch:{
     editing(){
       console.log("editing", this.editing)
-      if(this.editing != null){
-        // this.item =  this.editing.doc
-        let item = Object.assign({}, this.editing)
-        this.$store.commit('app/updateItem', item)
-      }else{
-        // this.item = this.default
-        let item = Object.assign({}, this.default)
-        this.$store.commit('app/updateItem', item)
-      }
+      // if(this.editing != null){
+      //   // this.item =  this.editing.doc
+      //   let item = Object.assign({}, this.editing)
+      //   this.$store.commit('app/updateItem', item)
+      // }else{
+      //   // this.item = this.default
+      //   let item = Object.assign({}, this.default)
+      //   this.$store.commit('app/updateItem', item)
+      // }
       // console.log(this.item)
       // this.$store.commit('app/updateItem', this.item)
     },

@@ -1,6 +1,6 @@
 <template>
   <div>
-        {{ choudbi}}
+    <!-- {{ choudbi}} -->
     <b-row>
       <b-col sm="3">
         <label for="name"><code>Name</code>:</label>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import * as Choudbi from '@/agents/choudbi'
 export default {
   name: "NodeEditor",
   components: {
@@ -37,12 +38,26 @@ export default {
   watch:{
     choudbi(){
       this.$refs.name.focus()
+    },
+    editing(){
+      console.log("EDITING", this.editing)
+      let choudbi = new Choudbi({debug: true})
+      console.log(choudbi)
+
+      // let item = {'ve:name': this.words, 've:age': 0, 've:status': "creating"}
+      // choudbi.update_data(item)
+      // choudbi.debug()
+      // await this.$store.dispatch('choudbi/update', choudbi)
     }
   },
   computed:{
     choudbi:{
       get() { return this.$store.state.choudbi.choudbi},
       set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
+    },
+    editing:{
+      get() { return this.$store.state.app.editing},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }
 }

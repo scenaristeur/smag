@@ -15,7 +15,7 @@ const actions = {
     await idb.saveItem(node);
     // node.doc = await am.load(node)
     // console.log(node)
-  //  item.actorId = node.id
+    //  item.actorId = node.id
     context.commit('app/editing', null, { root: true })
     context.dispatch('getItems')
   },
@@ -32,7 +32,8 @@ const actions = {
     let items = await idb.getItems();
     items.forEach(async function(i) {
       console.log(i)
-      let item = await am.load(i)
+      let item = {}
+      item.doc = await am.load(i)
       item.am = i
       //i.doc = await am.load(i)
       local_items.push(item);

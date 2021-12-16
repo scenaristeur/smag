@@ -2,7 +2,7 @@
   <div>
     <!-- properties in nodeproperties: {{properties}}<br>
     item in nodeproperties: {{item}} -->
-    **{{choudbi}} **
+    <!-- **{{choudbi}} ** -->
     <b-row v-for="p in choudbi._data['ve:properties']" :key="p.id">
       <b-col sm="5">
         <label for="name"><code>{{p.name}}</code>:</label>
