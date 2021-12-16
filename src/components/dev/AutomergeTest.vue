@@ -72,6 +72,7 @@ export default {
     },
     async update(){
       if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
+        console.log(this.editing, this.item)
         await this.$store.dispatch('local/update', { old: this.editing, new: this.item})
         this.init()
       }else{
