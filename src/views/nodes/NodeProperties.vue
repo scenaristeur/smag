@@ -98,7 +98,7 @@ export default {
     },
     choudbi:{
       get() { return this.$store.state.choudbi.choudbi},
-      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
+      set(choudbi) {this.$store.dispatch('choudbi/update', choudbi)}
     },
   }
 }

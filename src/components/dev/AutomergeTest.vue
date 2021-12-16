@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <!-- {{ choudbi}} -->
-    <NodeEditor v-if="this.choudbi != null" />
+    <NodeEditor v-if="this.editing != null" />
 
     <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
     <!-- <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
@@ -12,9 +12,9 @@
     <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
   </b-dropdown> -->
   <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
-  <b-button v-if="choudbi != null" @click="update" variant="info">Update</b-button>
-  <b-button v-if="choudbi != null" @click="cancel" variant="light">Cancel</b-button>
-  <b-button v-if="choudbi != null" @click="remove" variant="warning">Remove</b-button>
+  <b-button v-if="editing != null" @click="update" variant="info">Update</b-button>
+  <b-button v-if="editing != null" @click="cancel" variant="light">Cancel</b-button>
+  <b-button v-if="editing != null" @click="remove" variant="warning">Remove</b-button>
 
   <!-- {{ modeles}} -->
 
@@ -69,17 +69,8 @@ export default {
       await this.$store.dispatch('local/getItems')
     },
     async update(){
-      let update = false
-      if (update == false){
-        console.log("new")
-        await this.$store.dispatch('local/createAM', this.choudbi._data)
-
-      }else{
-        console.log("change")
-      }
-
-
-
+          await this.$store.dispatch('local/update', this.choudbi._data)
+          this.init()
       //  this.choudbi.save()
       // if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
       //   console.log(this.item)
@@ -141,7 +132,7 @@ export default {
     // },
     choudbi:{
       get() { return this.$store.state.choudbi.choudbi},
-      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
+      set(choudbi) {this.$store.dispatch('choudbi/update', choudbi)}
     },
 
   }

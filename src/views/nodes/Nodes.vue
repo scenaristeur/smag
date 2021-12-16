@@ -21,9 +21,9 @@
       <b-list-group-item
       v-for="i in orderedItems" :key="i.id" button
       @click="edit(i)">
-      <b>{{i.doc['ve:name']}}</b>
-      <small>{{i.doc['ve:age']}}</small>
-      {{ i.doc['ve:properties']}}
+      <b>{{i['ve:name']}}</b>
+      <small>{{i['ve:age']}}</small>
+      {{ i['ve:properties']}}
     </b-list-group-item>
   </b-list-group>
   <!-- {{items}} -->
@@ -48,8 +48,8 @@ export default {
     },
     byKey(key) {
       return function (o) {
-        var v = parseInt(o.doc[key], 10);
-        return isNaN(v) ? o.doc[key] : v;
+        var v = parseInt(o[key], 10);
+        return isNaN(v) ? o[key] : v;
       };
     }
   },
@@ -63,8 +63,7 @@ export default {
     },
     filteredItems: function (){
       return this.search.length == 0 ? this.items : this.items.filter( i => {
-        console.log()
-        return i.doc['ve:name'].toLowerCase().includes(this.search.toLowerCase())
+          return i['ve:name'].toLowerCase().includes(this.search.toLowerCase())
       })
     },
     search:{

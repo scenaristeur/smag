@@ -17,6 +17,7 @@ const state = () => ({
 
 const actions = {
   async update(context, c) {
+    console.log(c)
     context.state.choudbi = c
      // context.state.pod.workspaces.push(w)
     //Vue.prototype.$addWorkspaceToPod(w)

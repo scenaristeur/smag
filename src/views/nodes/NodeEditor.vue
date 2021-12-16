@@ -1,7 +1,8 @@
 <template>
   <div>
-    <!-- {{ choudbi}} -->
-    <b-row>
+
+    <b-row v-if="choudbi != null">
+        <!-- {{ choudbi}} -->
       <b-col sm="3">
         <label for="name"><code>Name</code>:</label>
       </b-col>
@@ -20,7 +21,7 @@
     </b-row>
 
     <b-row>
-      <NodeProperties />
+      <NodeProperties v-if="choudbi != null" />
     </b-row>
   </div>
 </template>
@@ -33,16 +34,19 @@ export default {
     'NodeProperties': () => import('@/views/nodes/NodeProperties'),
   },
   mounted(){
-    this.$refs.name.focus()
+  //  this.$refs.name.focus()
   },
   watch:{
     choudbi(){
-      this.$refs.name.focus()
+      //this.$refs.name != undefined ? this.$refs.name.focus(): ""
     },
-    editing(){
+    async editing(){
       console.log("EDITING", this.editing)
-      let choudbi = new Choudbi({debug: true})
-      console.log(choudbi)
+      this.choudbi = new Choudbi({debug: true})
+      console.log(this.choudbi)
+      this.choudbi.update_data(this.editing)
+      this.choudbi.debug()
+       await this.$store.dispatch('choudbi/update', this.choudbi)
 
       // let item = {'ve:name': this.words, 've:age': 0, 've:status': "creating"}
       // choudbi.update_data(item)
@@ -53,7 +57,7 @@ export default {
   computed:{
     choudbi:{
       get() { return this.$store.state.choudbi.choudbi},
-      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
+      set(choudbi) {this.$store.dispatch('choudbi/update', choudbi)}
     },
     editing:{
       get() { return this.$store.state.app.editing},

@@ -30,7 +30,7 @@ class Choudbi{
     this._data = Object.assign({}, schema);
     //  this.id == undefined ? this.id = uuidv4() : ""
     //this.name = this.options.name || this.id
-
+    this._data.id = uuidv4()
     this._data['as:created'] = Date.now()
 
     //  console.log("construct", this.options)
@@ -45,7 +45,7 @@ class Choudbi{
     console.log("--- DEBUG --- CHOUDBI_data : ",this._data)
     console.log("--- DEBUG --- CHOUDBI_data.properties : ",this._data['ve:properties'])
   }
-  
+
   update_data(val){
     this._data = Object.assign(this._data, val);
   }
