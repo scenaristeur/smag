@@ -4,27 +4,25 @@
     <NodeEditor v-if="this.choudbi != null" />
 
     <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
-    <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
-      text="Add Properties" class="m-2" variant="outline-dark">
-      <!-- id="dropdown-offset" offset="25"  -->
+    <!-- <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
+    text="Add Properties" class="m-2" variant="outline-dark">
 
-      <b-dropdown-item v-for="(modele, name) in modeles" :key="modele.id"
-      @click="addModele(modele)">{{name}}</b-dropdown-item>
-      <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
-      <!-- <b-dropdown-item href="#">une personn else here</b-dropdown-item> -->
-    </b-dropdown>
-    <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
-    <b-button v-if="choudbi != null" @click="update" variant="info">Update</b-button>
-    <b-button v-if="choudbi != null || (item['ve:name'] != undefined && item['ve:name'])" @click="cancel" variant="light">Cancel</b-button>
-    <b-button v-if="choudbi != null" @click="remove" variant="warning">Remove</b-button>
+    <b-dropdown-item v-for="(modele, name) in modeles" :key="modele.id"
+    @click="addModele(modele)">{{name}}</b-dropdown-item>
+    <b-dropdown-item href="#">Add a custom property (todo)</b-dropdown-item>
+  </b-dropdown> -->
+  <!-- <b-button  @click="addProps" variant="outline-dark">Add properties</b-button> -->
+  <b-button v-if="choudbi != null" @click="update" variant="info">Update</b-button>
+  <b-button v-if="choudbi != null" @click="cancel" variant="light">Cancel</b-button>
+  <b-button v-if="choudbi != null" @click="remove" variant="warning">Remove</b-button>
 
-    <!-- {{ modeles}} -->
+  <!-- {{ modeles}} -->
 
-    <Nodes />
-    <!-- [AM] Editing : {{ editing }}<br>
-    [AM] ITEM : {{ item }} -->
+  <Nodes />
+  <!-- [AM] Editing : {{ editing }}<br>
+  [AM] ITEM : {{ item }} -->
 
-  </b-container>
+</b-container>
 </template>
 
 <script>
@@ -71,14 +69,25 @@ export default {
       await this.$store.dispatch('local/getItems')
     },
     async update(){
-      this.choudbi.save()
-      if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
-        console.log(this.item)
-        await this.$store.dispatch('local/update', this.item)
-        this.init()
+      let update = false
+      if (update == false){
+        console.log("new")
+        await this.$store.dispatch('local/createAM', this.choudbi._data)
+
       }else{
-        this.emptyMessage("name")
+        console.log("change")
       }
+
+
+
+      //  this.choudbi.save()
+      // if (this.item['ve:name'] != undefined && this.item['ve:name'].length > 0){
+      //   console.log(this.item)
+      //   await this.$store.dispatch('local/update', this.item)
+      //   this.init()
+      // }else{
+      //   this.emptyMessage("name")
+      // }
     },
     cancel(){
       this.init()
@@ -88,7 +97,7 @@ export default {
       this.init()
     },
     init(){
-      this.item  = Object.assign({}, this.default)
+      //  this.item  = Object.assign({}, this.default)
       this.$store.dispatch('local/getItems')
       this.$store.commit('app/editing', null)
     },
@@ -126,10 +135,10 @@ export default {
       get() { return this.$store.state.app.editing},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
-    item:{
-      get() { return this.$store.state.app.item},
-      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
-    },
+    // item:{
+    //   get() { return this.$store.state.app.item},
+    //   set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    // },
     choudbi:{
       get() { return this.$store.state.choudbi.choudbi},
       set(choudbi) {this.$store.commit('choudbi/update', choudbi)}

@@ -67,7 +67,9 @@ export default {
     },
     update(){
       console.log(this.currentProp)
-      this.$store.dispatch('app/updateProp', this.currentProp)
+      this.choudbi.updateProp(this.currentProp)
+      this.choudbi.debug()
+      //this.$store.dispatch('app/updateProp', this.currentProp)
     }
   },
   computed:{
@@ -86,6 +88,10 @@ export default {
     item:{
       get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    choudbi:{
+      get() { return this.$store.state.choudbi.choudbi},
+      set(choudbi) {this.$store.commit('choudbi/update', choudbi)}
     },
   }
 }

@@ -7,7 +7,7 @@ const state = () => ({
 })
 
 const actions = {
-  async create(context, item){
+  async createAM(context, item){
     item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
     item['ve:updated'] = Date.now()
     let node = await am.create(item)
@@ -15,8 +15,9 @@ const actions = {
     await idb.saveItem(node);
     // node.doc = await am.load(node)
     // console.log(node)
-    item.actorId = node.id
-    context.commit('app/editing', item, { root: true })
+  //  item.actorId = node.id
+    context.commit('app/editing', null, { root: true })
+    context.dispatch('getItems')
   },
   async delete(context, item) {
     console.log(item)

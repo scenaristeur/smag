@@ -45,11 +45,7 @@ class Choudbi{
     console.log("--- DEBUG --- CHOUDBI_data : ",this._data)
     console.log("--- DEBUG --- CHOUDBI_data.properties : ",this._data['ve:properties'])
   }
-
-
-save(){
-  console.log("save", this)
-}
+  
   update_data(val){
     this._data = Object.assign(this._data, val);
   }
@@ -59,9 +55,17 @@ save(){
   }
 
   addProperty(name){
+    console.log("add prop", name)
     this['ve:status'] = "addProp"
     let prop = {id: uuidv4(), name: name, values: []}
     this._data['ve:properties'].push(prop)
+  }
+
+  updateProp(prop){
+    console.log("update prop", prop)
+    var index = this._data['ve:properties'].findIndex(p => p.id == prop.id);
+    Object.assign(this._data['ve:properties'][index], prop)
+    //  index === -1 ? context.state.properties.push(p) : context.state.properties[index] = p
   }
 
 

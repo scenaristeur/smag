@@ -2,9 +2,10 @@
   <div>
     <!-- properties in nodeproperties: {{properties}}<br>
     item in nodeproperties: {{item}} -->
-    <b-row v-for="p in properties" :key="p.name">
+    **{{choudbi}} **
+    <b-row v-for="p in choudbi._data['ve:properties']" :key="p.id">
       <b-col sm="5">
-        <label for="name"><code>{{p.label || p.name}}</code>:</label>
+        <label for="name"><code>{{p.name}}</code>:</label>
       </b-col>
       <b-col sm="7">
 
@@ -58,10 +59,11 @@ export default {
     fieldNameChanged(field_name){
       console.log(field_name)
       if(this.clearing == false && field_name.length > 0){
-        let p = {name: field_name, values: []}
-        this.$store.commit('app/addProp', p)
+        // let p = {name: field_name, values: []}
+        // this.$store.commit('app/addProp', p)
         this.choudbi.addProperty(field_name)
         this.choudbi.debug()
+        this.$store.dispatch('choudbi/update', this.choudbi)
         this.field = {}
       }
     },
@@ -77,10 +79,9 @@ export default {
     },
   },
   watch:{
-    // item(){
-    //   this.properties = this.$store.state.app.item['ve:properties']
-    //   console.log(this.properties)
-    // }
+    choudbi(){
+    console.log(this.choudbi)
+    }
   },
   computed:{
     properties:{
