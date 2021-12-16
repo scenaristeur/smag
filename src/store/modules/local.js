@@ -7,6 +7,16 @@ const state = () => ({
 })
 
 const actions = {
+  async create(context, item){
+    item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
+    item['ve:updated'] = Date.now()
+    let node = await am.create(item)
+    console.log("node", node)
+    await idb.saveItem(node);
+    node.doc = await am.load(node)
+    console.log(node)
+    context.state.editing = node
+  },
   async delete(context, item) {
     let del =  confirm("Are you sur you want to delete "+item.doc['ve:name']);
     if (del == true){
@@ -24,17 +34,6 @@ const actions = {
     console.log(local_items)
     context.state.items = local_items
   },
-  async create(context, item){
-    item['ve:created'] == undefined ? item['ve:created'] = Date.now() : ""
-    item['ve:updated'] = Date.now()
-    let node = await am.create(item)
-    console.log("node", node)
-    await idb.saveItem(node);
-    node.doc = await am.load(node)
-    console.log(node)
-    context.state.editing = node
-  },
-
   async update(context, modif){
     // console.log("modif", modif.old, modif.new)
     modif.new['ve:updated'] = Date.now()

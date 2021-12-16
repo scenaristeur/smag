@@ -26,7 +26,7 @@
 
     props:  {{item['ve:properties']}}
     <hr>
-    item : {{item}}
+    <!-- editing in editor : {{editing}} -->
   </div>
 </template>
 
@@ -47,6 +47,10 @@ export default {
   computed:{
     item:{
       get() { return this.$store.state.app.item},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    editing:{
+      get() { return this.$store.state.local.editing},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }

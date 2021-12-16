@@ -1,6 +1,7 @@
 <template>
   <div>
-    properties in nodeproperties: {{properties}}
+    properties in nodeproperties: {{properties}}<br>
+    item in nodeproperties: {{item}}
     <b-row v-for="p in properties" :key="p.name">
       <b-col sm="5">
         <label for="name"><code>{{p.label || p.name}}</code>:</label>
@@ -31,7 +32,6 @@
     </b-row>
 
     <FieldModal />
-    {{properties}}
   </div>
 </template>
 
@@ -59,9 +59,7 @@ export default {
       console.log(field_name)
       if(this.clearing == false && field_name.length > 0){
         let p = {name: field_name, values: []}
-
-        var index = this.properties.findIndex(x => x.name==p.name);
-        index === -1 ? this.properties.push(p) : alert(p.name+" already exist")
+        this.$store.commit('app/addProp', p)
         this.field = {}
       }
     },
@@ -76,9 +74,23 @@ export default {
       this.$store.commit('app/setCurrentProp', p)
     },
   },
+  watch:{
+    // item(){
+    //   this.properties = this.$store.state.app.item['ve:properties']
+    //   console.log(this.properties)
+    // }
+  },
   computed:{
     properties:{
-      get() { return this.$store.state.app.item['ve:properties'] || []},
+      get() { return this.$store.state.app.properties},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    editing:{
+      get() { return this.$store.state.local.editing},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    item:{
+      get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }

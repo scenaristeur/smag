@@ -3,7 +3,6 @@
 
     <NodeEditor v-if="this.editing != null" />
 
-    ITEM : {{ item }}
     <!-- <b-button @click="create" variant="info" v-if="editing == null">Create</b-button> -->
     <b-dropdown v-if="item['ve:name'] != undefined && item['ve:name'].length > 0"
       text="Add Properties" class="m-2" variant="outline-dark">
@@ -22,6 +21,8 @@
     <!-- {{ modeles}} -->
 
     <Nodes />
+    [AM] Editing : {{ editing }}<br>
+    [AM] ITEM : {{ item }}
 
   </b-container>
 </template>
@@ -100,17 +101,21 @@ export default {
   },
   watch:{
     editing(){
-
+      console.log("editing", this.editing)
       if(this.editing != null){
-        this.item = Object.assign({}, this.editing.doc)
+        // this.item =  this.editing.doc
+        this.$store.commit('app/updateItem', this.editing.doc)
       }else{
-        this.item = Object.assign({}, this.default)
+        // this.item = this.default
+        this.$store.commit('app/updateItem', this.default)
       }
-      this.$store.commit('app/updateItem', this.item)
+      // console.log(this.item)
+      // this.$store.commit('app/updateItem', this.item)
     },
-    item(){
-      this.$store.commit('app/updateItem', this.item)
-    }
+    // item(){
+    //   console.log("Item", this.item)
+    //   //  this.$store.commit('app/updateItem', this.item)
+    // }
   },
   computed:{
     editing:{

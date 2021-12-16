@@ -33,6 +33,8 @@
       @change="addNewLink"/>
     </b-tab>
   </b-tabs>
+
+  properties {{properties}}
 </b-modal>
 
 </template>
@@ -65,12 +67,24 @@ export default {
     },
     update(){
       console.log(this.currentProp)
-      this.$store.commit('app/addProp', this.currentProp)
+      this.$store.dispatch('app/updateProp', this.currentProp)
     }
   },
   computed:{
     currentProp:{
       get() { return this.$store.state.app.currentProp},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    properties:{
+      get() { return this.$store.state.app.properties},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    editing:{
+      get() { return this.$store.state.local.editing},
+      set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
+    },
+    item:{
+      get() { return this.$store.state.app.item},
       set(/*note*/) {/*this.$store.commit('booklice/setCurrentNote', note)*/}
     },
   }
