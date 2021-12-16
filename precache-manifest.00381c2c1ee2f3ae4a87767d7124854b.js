@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "19b68a260922c8ed128c",
+    "revision": "aa2686757e81ea1c9b43",
     "url": "/smag/css/app.1a2aa46a.css"
   },
   {
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/css/chunk-vendors.57b5595f.css"
   },
   {
-    "revision": "32a7eeb3ad32569e7a64fb0fbcc6e64b",
+    "revision": "73138948a03dfd1d2f12b732cc1804c9",
     "url": "/smag/index.html"
   },
   {
@@ -24,28 +24,28 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/about.0d0047e6.js"
   },
   {
-    "revision": "19b68a260922c8ed128c",
-    "url": "/smag/js/app.5d4ed76b.js"
+    "revision": "aa2686757e81ea1c9b43",
+    "url": "/smag/js/app.bd11e775.js"
   },
   {
     "revision": "40b1e6ce63c8c974025d",
     "url": "/smag/js/chunk-054d10f8.0f8aeedf.js"
   },
   {
+    "revision": "90a708a0789ccb941719",
+    "url": "/smag/js/chunk-0a435470.44ac6a48.js"
+  },
+  {
     "revision": "dffab873ec0a69ae99c5",
     "url": "/smag/js/chunk-1f9630aa.2b9f4184.js"
   },
   {
-    "revision": "bf6848fe0662f9466392",
-    "url": "/smag/js/chunk-2d0c8bf9.7c963723.js"
+    "revision": "ab6825cc26711bc326a6",
+    "url": "/smag/js/chunk-2d0c8bf9.9ebe1217.js"
   },
   {
     "revision": "0da1b172e196962cff61",
     "url": "/smag/js/chunk-2d0d3a59.9e8201ea.js"
-  },
-  {
-    "revision": "a892d9b19b5c1be43cb7",
-    "url": "/smag/js/chunk-2d20f754.26e93ee9.js"
   },
   {
     "revision": "69bc9a60ae639ae239a6",
@@ -68,16 +68,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/smag/js/chunk-a0ef136a.a8dff74e.js"
   },
   {
-    "revision": "52597be29aa7c5fa3879",
-    "url": "/smag/js/chunk-bc81882e.d3ecded5.js"
+    "revision": "0e3a4606ea7b804df997",
+    "url": "/smag/js/chunk-bc81882e.2a5b5b17.js"
   },
   {
     "revision": "abf6d796a87285562484",
     "url": "/smag/js/chunk-cb0172c2.18c86a21.js"
   },
   {
-    "revision": "52ee9a6b33ce3ced4474",
-    "url": "/smag/js/chunk-d95133ce.3a46e30f.js"
+    "revision": "17fe0f525669d74a947c",
+    "url": "/smag/js/chunk-d95133ce.c78c4e04.js"
   },
   {
     "revision": "c9c4fc7e0835c735eb50",
